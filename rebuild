@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+black emu_orm tests
+pytest -v
