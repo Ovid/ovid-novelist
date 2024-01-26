@@ -22,7 +22,7 @@ class OvidFont:
     def setStrikeThroughText(self):
         fmt = QTextCharFormat()
         fmt.setFontStrikeOut(True)
-        self.textEditor.textCursor().mergeCharFormat(fmt)# Connect actions
+        self.textEditor.textCursor().mergeCharFormat(fmt)  # Connect actions
 
     def setFontFamily(self, font):
         fmt = self.textEditor.currentCharFormat()
