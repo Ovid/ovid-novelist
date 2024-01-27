@@ -1,11 +1,8 @@
 import sys
 from PyQt6.QtWidgets import (
     QTextEdit,
-    QToolButton,
     QApplication,
     QMainWindow,
-    QToolBar,
-    QComboBox,
     QDockWidget,
     QListWidget,
     QPushButton,
@@ -14,14 +11,13 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtGui import (
     QAction,
-    QFont,
     QShortcut,
     QKeySequence,
 )
 from PyQt6.QtCore import Qt
-from ovid.ui.OvidFontComboBox import OvidFontComboBox
 from ovid.ui.OvidFont import OvidFont
 from ovid.ui.OvidMenuBar import OvidMenuBar
+from ovid.ui.OvidToolBar import OvidToolBar
 
 class Ovid(QMainWindow):
     defaultFontFamily = "Arial"
@@ -42,65 +38,14 @@ class Ovid(QMainWindow):
 
         # Create Menu Bar
         self.setMenuBar(OvidMenuBar(self))
-
-        # Create Toolbar
-        self.toolbar = QToolBar("Main Toolbar")
-        self.addToolBar(self.toolbar)
-
-        # Add actions for text formatting
-        bold_button = QToolButton()
-        bold_button.setText("B")
-        bold_button.setFont(QFont("Arial", 16, QFont.Weight.Bold))
-        bold_button.setToolTip("Bold")
-        bold_button.clicked.connect(self.fonts.setBoldText)
-        self.toolbar.addWidget(bold_button)
-
-        italic_button = QToolButton()
-        italic_button.setText("I")
-        italic_font = QFont("Arial", 16)
-        italic_font.setItalic(True)
-        italic_button.setFont(italic_font)
-        italic_button.setToolTip("Italic")
-        italic_button.clicked.connect(self.fonts.setItalicText)
-        self.toolbar.addWidget(italic_button)
-
-        underline_button = QToolButton()
-        underline_button.setText("U")
-        underline_font = QFont("Arial", 16)
-        underline_font.setUnderline(True)
-        underline_button.setFont(underline_font)
-        underline_button.setToolTip("Underline")
-        underline_button.clicked.connect(self.fonts.setUnderlineText)
-        self.toolbar.addWidget(underline_button)
-
-        strikethrough_button = QToolButton()
-        strikethrough_button.setText("S")
-        strikethrough_font = QFont("Arial", 16)
-        strikethrough_font.setStrikeOut(True)
-        strikethrough_button.setFont(strikethrough_font)
-        strikethrough_button.setToolTip("Strikethrough")
-        strikethrough_button.clicked.connect(self.fonts.setStrikeThroughText)
-        self.toolbar.addWidget(strikethrough_button)
-
-        # Add font selection dropdown
-        self.fontComboBox = OvidFontComboBox(self)
-        self.toolbar.addWidget(self.fontComboBox)
-
-        # Add font size selection dropdown
-        self.fontSizeComboBox = QComboBox(self)
-        self.toolbar.addWidget(self.fontSizeComboBox)
-        for i in range(8, 30):
-            self.fontSizeComboBox.addItem(str(i))
-
-        self.fontSizeComboBox.setCurrentText(str(Ovid.defaultFontSize))
-        self.fontSizeComboBox.setEditable(True)
-        self.fontComboBox.setCurrentText(Ovid.defaultFontFamily)
+        self.addToolBar(Qt.ToolBarArea.TopToolBarArea, OvidToolBar(self))
 
         # Shortcuts for text formatting
         QShortcut(QKeySequence("Ctrl+B"), self, self.fonts.setBoldText)
         QShortcut(QKeySequence("Ctrl+I"), self, self.fonts.setItalicText)
         QShortcut(QKeySequence("Ctrl+U"), self, self.fonts.setUnderlineText)
         QShortcut(QKeySequence("Ctrl+T"), self, self.fonts.setStrikeThroughText)
+        QShortcut(QKeySequence("Ctrl+Shift+C"), self, self.fonts.clearFormatting)
 
         # Create the dockable sidebar
         self.sidebar = QDockWidget("Chapters", self)
@@ -130,8 +75,8 @@ class Ovid(QMainWindow):
         view_menu.addAction(toggleSidebarAction)
 
         # Connect font and font size combobox
-        self.fontComboBox.currentTextChanged.connect(self.fonts.setFontFamily)
-        self.fontSizeComboBox.currentTextChanged.connect(self.fonts.setFontSize)
+        # self.fontComboBox.currentTextChanged.connect(self.fonts.setFontFamily)
+        # self.fontSizeComboBox.currentTextChanged.connect(self.fonts.setFontSize)
 
     def addChapter(self):
         # This function will be called when the button is clicked
