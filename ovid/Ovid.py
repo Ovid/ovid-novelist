@@ -3,11 +3,6 @@ from PyQt6.QtWidgets import (
     QTextEdit,
     QApplication,
     QMainWindow,
-    QDockWidget,
-    QListWidget,
-    QPushButton,
-    QVBoxLayout,
-    QWidget,
 )
 from PyQt6.QtGui import (
     QShortcut,
@@ -18,6 +13,7 @@ from PyQt6.QtCore import Qt
 from ovid.ui.OvidFont import OvidFont
 from ovid.ui.OvidMenuBar import OvidMenuBar
 from ovid.ui.OvidToolBar import OvidToolBar
+from ovid.ui.OvidDockWidget import OvidDockWidget
 
 
 class Ovid(QMainWindow):
@@ -60,25 +56,8 @@ class Ovid(QMainWindow):
         QShortcut(QKeySequence("Ctrl+Shift+C"), self, self.fonts.clearFormatting)
 
         # Create the dockable sidebar
-        self.sidebar = QDockWidget("Chapters", self)
-        self.sidebar.setMaximumWidth(200)  # Set a preferred width for the sidebar
+        self.sidebar = OvidDockWidget(self)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.sidebar)
-
-        # Create a widget to hold the list and the button
-        self.sidebarWidget = QWidget()
-        self.sidebarLayout = QVBoxLayout(self.sidebarWidget)
-
-        # Create the QListWidget for chapters
-        self.chapterList = QListWidget()
-        self.sidebarLayout.addWidget(self.chapterList)
-
-        # Create the button to add new chapters
-        self.addChapterButton = QPushButton("Add Chapter")
-        self.addChapterButton.clicked.connect(self.addChapter)
-        self.sidebarLayout.addWidget(self.addChapterButton)
-
-        # Set the widget to the dock
-        self.sidebar.setWidget(self.sidebarWidget)
 
     def addChapter(self):
         # This function will be called when the button is clicked
