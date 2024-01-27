@@ -11,7 +11,7 @@ class OvidMenuBar(QMenuBar):
 
     def setup(self):
         # Add menus
-        file_menu = self.addMenu("Novel")
+        file_menu = self.addMenu("File")
         edit_menu = self.addMenu("Edit")
         show_hide_menu = self.addMenu("Show/Hide")
 

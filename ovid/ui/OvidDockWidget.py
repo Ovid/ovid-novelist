@@ -1,9 +1,11 @@
 from PyQt6.QtWidgets import QDockWidget, QListWidget, QPushButton, QVBoxLayout, QWidget
+from ovid.model.Novel import Novel
 
 
 class OvidDockWidget(QDockWidget):
     def __init__(self, parent=None):
         super().__init__("Chapters", parent)
+        self.novel = Novel()
         self.setMaximumWidth(200)  # Set a preferred width for the sidebar
 
         # Create a widget to hold the list and the button

@@ -14,11 +14,13 @@ from ovid.ui.OvidFont import OvidFont
 from ovid.ui.OvidMenuBar import OvidMenuBar
 from ovid.ui.OvidToolBar import OvidToolBar
 from ovid.ui.OvidDockWidget import OvidDockWidget
+from ovid.ui.OvidTextEdit import OvidTextEdit
+
 from ovid.model.AuthorCollection import AuthorCollection
 
 
 class Ovid(QMainWindow):
-    defaultFontFamily = "Arial"
+    defaultFontFamily = "Times New Roman"
     defaultFontSize = 25
     defaultMargin = 20
 
@@ -27,20 +29,14 @@ class Ovid(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle("Ovid")
         self.setGeometry(100, 100, 1200, 800)
         # Create the text editor area
-        self.textEditor = QTextEdit()
-        self.textEditor.setFont(QFont(Ovid.defaultFontFamily, Ovid.defaultFontSize))
-        self.textEditor.setStyleSheet("background-color: white;")
-        self.textEditor.setViewportMargins(
-            Ovid.defaultMargin,
-            Ovid.defaultMargin,
-            Ovid.defaultMargin,
-            Ovid.defaultMargin,
-        )
+        self.textEditor = OvidTextEdit(self)
         self.setCentralWidget(self.textEditor)
+
+        # Create our font helpers
         self.fonts = OvidFont(self)
+        self.fonts.setFontFamily(Ovid.defaultFontFamily)
         self.fonts.setFontSize(Ovid.defaultFontSize)
 
         # Create Menu Bar
@@ -59,6 +55,7 @@ class Ovid(QMainWindow):
         # Create the dockable sidebar
         self.sidebar = OvidDockWidget(self)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.sidebar)
+        self.setWindowTitle(self.sidebar.novel.title)
 
         self.author_collection = AuthorCollection()
 
