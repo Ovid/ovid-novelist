@@ -23,6 +23,7 @@ from ovid.ui.OvidToolBar import OvidToolBar
 class Ovid(QMainWindow):
     defaultFontFamily = "Arial"
     defaultFontSize = 25
+    defaultMargin = 20
 
     def __init__(self):
         super().__init__()
@@ -34,6 +35,8 @@ class Ovid(QMainWindow):
         # Create the text editor area
         self.textEditor = QTextEdit()
         self.textEditor.setFont(QFont(Ovid.defaultFontFamily, Ovid.defaultFontSize))
+        self.textEditor.setStyleSheet("background-color: white;")
+        self.textEditor.setViewportMargins(Ovid.defaultMargin, Ovid.defaultMargin, Ovid.defaultMargin, Ovid.defaultMargin)
         self.setCentralWidget(self.textEditor)
         self.fonts = OvidFont(self)
         self.fonts.setFontSize(Ovid.defaultFontSize)
@@ -75,10 +78,6 @@ class Ovid(QMainWindow):
         toggleSidebarAction = QAction("Toggle Sidebar", self)
         toggleSidebarAction.triggered.connect(self.toggleSidebar)
         view_menu.addAction(toggleSidebarAction)
-
-        # Connect font and font size combobox
-        # self.fontComboBox.currentTextChanged.connect(self.fonts.setFontFamily)
-        # self.fontSizeComboBox.currentTextChanged.connect(self.fonts.setFontSize)
 
     def addChapter(self):
         # This function will be called when the button is clicked
