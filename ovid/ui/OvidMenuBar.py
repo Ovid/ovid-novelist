@@ -26,14 +26,17 @@ class OvidMenuBar(QMenuBar):
         italic_action = QAction("Italic", self)
         underline_action = QAction("Underline", self)
         strikethrough_action = QAction("Strikethrough", self)
+        clearformatting_action = QAction("Clear Formatting", self)
 
         # Connect actions
         bold_action.triggered.connect(self.ovid.fonts.setBoldText)
         italic_action.triggered.connect(self.ovid.fonts.setItalicText)
         underline_action.triggered.connect(self.ovid.fonts.setUnderlineText)
         strikethrough_action.triggered.connect(self.ovid.fonts.setStrikeThroughText)
+        clearformatting_action.triggered.connect(self.ovid.fonts.clearFormatting)
 
         edit_menu.addAction(bold_action)
         edit_menu.addAction(italic_action)
         edit_menu.addAction(underline_action)
         edit_menu.addAction(strikethrough_action)
+        edit_menu.addAction(clearformatting_action)

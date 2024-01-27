@@ -46,12 +46,12 @@ class OvidToolBar(QToolBar):
         strikethrough_button.clicked.connect(self.parent.fonts.setStrikeThroughText)
         self.addWidget(strikethrough_button)
 
-        # Add all the toolbar logic here
-        # For example:
-        #strikethrough_button = QToolButton(self)
-        #strikethrough_button.setToolTip("Strikethrough")
-        #strikethrough_button.clicked.connect(self.parent.fonts.setStrikeThroughText)
-        #self.addWidget(strikethrough_button)
+        clearformatting_button = QToolButton()
+        clearformatting_button.setText("C")
+        clearformatting_button.setFont(QFont("Arial", 16))
+        clearformatting_button.setToolTip("Clear Formatting")
+        clearformatting_button.clicked.connect(self.parent.fonts.clearFormatting)
+        self.addWidget(clearformatting_button)
 
         # Add font selection dropdown
         self.fontComboBox = OvidFontComboBox(self)
