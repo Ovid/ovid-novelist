@@ -63,7 +63,7 @@ class OvidToolBar(QToolBar):
         # Add font size selection dropdown
         self.fontSizeComboBox = QComboBox(self)
         self.addWidget(self.fontSizeComboBox)
-        for i in range(8, 30):
+        for i in range(8, 31):
             self.fontSizeComboBox.addItem(str(i))
 
         self.fontSizeComboBox.setCurrentText(str(self.parent.defaultFontSize))
