@@ -13,6 +13,7 @@ from PyQt6.QtGui import (
     QAction,
     QShortcut,
     QKeySequence,
+    QFont,
 )
 from PyQt6.QtCore import Qt
 from ovid.ui.OvidFont import OvidFont
@@ -21,7 +22,7 @@ from ovid.ui.OvidToolBar import OvidToolBar
 
 class Ovid(QMainWindow):
     defaultFontFamily = "Arial"
-    defaultFontSize = 16
+    defaultFontSize = 25
 
     def __init__(self):
         super().__init__()
@@ -32,6 +33,7 @@ class Ovid(QMainWindow):
         self.setGeometry(100, 100, 1200, 800)
         # Create the text editor area
         self.textEditor = QTextEdit()
+        self.textEditor.setFont(QFont(Ovid.defaultFontFamily, Ovid.defaultFontSize))
         self.setCentralWidget(self.textEditor)
         self.fonts = OvidFont(self)
         self.fonts.setFontSize(Ovid.defaultFontSize)

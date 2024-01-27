@@ -10,18 +10,20 @@ class OvidToolBar(QToolBar):
         self.initToolBar()
 
     def initToolBar(self):
+        defaultFont = self.parent.defaultFontFamily
+        defaultFontSize = self.parent.defaultFontSize
 
         # Add actions for text formatting
         bold_button = QToolButton()
         bold_button.setText("B")
-        bold_button.setFont(QFont("Arial", 16, QFont.Weight.Bold))
+        bold_button.setFont(QFont(defaultFont, defaultFontSize, QFont.Weight.Bold))
         bold_button.setToolTip("Bold")
         bold_button.clicked.connect(self.parent.fonts.setBoldText)
         self.addWidget(bold_button)
 
         italic_button = QToolButton()
         italic_button.setText("I")
-        italic_font = QFont("Arial", 16)
+        italic_font = QFont(defaultFont, defaultFontSize)
         italic_font.setItalic(True)
         italic_button.setFont(italic_font)
         italic_button.setToolTip("Italic")
@@ -30,7 +32,7 @@ class OvidToolBar(QToolBar):
 
         underline_button = QToolButton()
         underline_button.setText("U")
-        underline_font = QFont("Arial", 16)
+        underline_font = QFont(defaultFont, defaultFontSize)
         underline_font.setUnderline(True)
         underline_button.setFont(underline_font)
         underline_button.setToolTip("Underline")
@@ -39,7 +41,7 @@ class OvidToolBar(QToolBar):
 
         strikethrough_button = QToolButton()
         strikethrough_button.setText("S")
-        strikethrough_font = QFont("Arial", 16)
+        strikethrough_font = QFont(defaultFont, defaultFontSize)
         strikethrough_font.setStrikeOut(True)
         strikethrough_button.setFont(strikethrough_font)
         strikethrough_button.setToolTip("Strikethrough")
@@ -48,7 +50,7 @@ class OvidToolBar(QToolBar):
 
         clearformatting_button = QToolButton()
         clearformatting_button.setText("C")
-        clearformatting_button.setFont(QFont("Arial", 16))
+        clearformatting_button.setFont(QFont(defaultFont, defaultFontSize))
         clearformatting_button.setToolTip("Clear Formatting")
         clearformatting_button.clicked.connect(self.parent.fonts.clearFormatting)
         self.addWidget(clearformatting_button)
