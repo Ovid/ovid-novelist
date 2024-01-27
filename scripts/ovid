@@ -1,0 +1,17 @@
+#!/usr/bin/env python
+
+# vim: ft=python
+
+import sys
+from PyQt6.QtWidgets import QApplication
+from ovid.Ovid import Ovid
+from multiprocessing import Process
+
+def main():
+    app = QApplication(sys.argv)
+    ovid = Ovid()
+    ovid.show()
+    sys.exit(app.exec())
+
+if __name__ == "__main__":
+    main()
