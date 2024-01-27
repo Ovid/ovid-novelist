@@ -73,21 +73,11 @@ class Ovid(QMainWindow):
         # Set the widget to the dock
         self.sidebar.setWidget(self.sidebarWidget)
 
-        # Add toggle action for sidebar in view menu
-        view_menu = self.menuBar().addMenu("View")
-        toggleSidebarAction = QAction("Toggle Sidebar", self)
-        toggleSidebarAction.triggered.connect(self.toggleSidebar)
-        view_menu.addAction(toggleSidebarAction)
-
     def addChapter(self):
         # This function will be called when the button is clicked
         # Here, you can add logic to add a new chapter to the chapterList
         new_chapter_name = f"Chapter {self.chapterList.count() + 1}"
         self.chapterList.addItem(new_chapter_name)
-
-    def toggleSidebar(self):
-        self.sidebar.setVisible(not self.sidebar.isVisible())
-
 
 def main():
     app = QApplication(sys.argv)

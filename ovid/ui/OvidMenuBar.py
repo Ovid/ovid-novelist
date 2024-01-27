@@ -2,16 +2,16 @@ from PyQt6.QtWidgets import QMenuBar
 from PyQt6.QtGui import QAction
 
 class OvidMenuBar(QMenuBar):
-    def __init__(self, ovid):
+    def __init__(self, parent):
         super().__init__()
-        self.ovid = ovid
+        self.parent = parent
         self.setup()
 
     def setup(self):
         # Add menus
         file_menu = self.addMenu("File")
         edit_menu = self.addMenu("Edit")
-        view_menu = self.addMenu("View")
+        show_hide_menu = self.addMenu("Show/Hide")
 
         # Add actions to File menu
         new_action = QAction("New", self)
@@ -29,14 +29,22 @@ class OvidMenuBar(QMenuBar):
         clearformatting_action = QAction("Clear Formatting", self)
 
         # Connect actions
-        bold_action.triggered.connect(self.ovid.fonts.setBoldText)
-        italic_action.triggered.connect(self.ovid.fonts.setItalicText)
-        underline_action.triggered.connect(self.ovid.fonts.setUnderlineText)
-        strikethrough_action.triggered.connect(self.ovid.fonts.setStrikeThroughText)
-        clearformatting_action.triggered.connect(self.ovid.fonts.clearFormatting)
+        bold_action.triggered.connect(self.parent.fonts.setBoldText)
+        italic_action.triggered.connect(self.parent.fonts.setItalicText)
+        underline_action.triggered.connect(self.parent.fonts.setUnderlineText)
+        strikethrough_action.triggered.connect(self.parent.fonts.setStrikeThroughText)
+        clearformatting_action.triggered.connect(self.parent.fonts.clearFormatting)
 
         edit_menu.addAction(bold_action)
         edit_menu.addAction(italic_action)
         edit_menu.addAction(underline_action)
         edit_menu.addAction(strikethrough_action)
         edit_menu.addAction(clearformatting_action)
+
+        # Add toggle action for sidebar in view menu
+        toggleSidebarAction = QAction("Toggle Chapter List", self)
+        toggleSidebarAction.triggered.connect(self.toggleSidebar)
+        show_hide_menu.addAction(toggleSidebarAction)
+
+    def toggleSidebar(self):
+        self.parent.sidebar.setVisible(not self.parent.sidebar.isVisible())
