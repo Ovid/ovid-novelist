@@ -14,6 +14,7 @@ from ovid.ui.OvidFont import OvidFont
 from ovid.ui.OvidMenuBar import OvidMenuBar
 from ovid.ui.OvidToolBar import OvidToolBar
 from ovid.ui.OvidDockWidget import OvidDockWidget
+from ovid.model.AuthorCollection import AuthorCollection
 
 
 class Ovid(QMainWindow):
@@ -58,6 +59,8 @@ class Ovid(QMainWindow):
         # Create the dockable sidebar
         self.sidebar = OvidDockWidget(self)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.sidebar)
+
+        self.author_collection = AuthorCollection()
 
     def addChapter(self):
         # This function will be called when the button is clicked
