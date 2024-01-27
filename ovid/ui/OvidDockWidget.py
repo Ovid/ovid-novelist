@@ -1,5 +1,6 @@
 from PyQt6.QtWidgets import QDockWidget, QListWidget, QPushButton, QVBoxLayout, QWidget
 
+
 class OvidDockWidget(QDockWidget):
     def __init__(self, parent=None):
         super().__init__("Chapters", parent)

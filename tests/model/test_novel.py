@@ -2,17 +2,18 @@ import unittest
 from ovid.model.Chapter import Chapter
 from ovid.model.Novel import Novel
 
+
 class TestNovel(unittest.TestCase):
     def setUp(self):
         self.novel = Novel()
         print("We are in setUp()")
-    
+
     def test_init(self):
         novel = Novel(title="My Novel", genre="Fantasy")
         self.assertEqual(novel.title, "My Novel")
         self.assertEqual(novel.genre, "Fantasy")
         self.assertEqual(novel.chapters, [])
-    
+
     def test_add_chapter(self):
         print("We are in test_add_chapter()")
         self.novel.add_chapter("Chapter 1", "This is the first chapter.")
@@ -41,5 +42,6 @@ class TestNovel(unittest.TestCase):
         self.assertEqual(chapters[0].title, "Chapter 1")
         self.assertEqual(chapters[1].title, "Chapter 2")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

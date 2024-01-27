@@ -6,6 +6,7 @@ from ovid.Ovid import Ovid
 
 app = QApplication([])
 
+
 class TestOvid(unittest.TestCase):
     def setUp(self):
         self.ovid = Ovid()
@@ -19,5 +20,6 @@ class TestOvid(unittest.TestCase):
         self.assertIsNotNone(self.ovid.textEditor)
         self.assertIsNotNone(self.ovid.sidebar)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()
