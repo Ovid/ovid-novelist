@@ -6,23 +6,35 @@ class OvidFont:
 
     def setBoldText(self):
         fmt = QTextCharFormat()
-        fmt.setFontWeight(QFont.Weight.Bold)
+        if self.textEditor.currentCharFormat().fontWeight() == QFont.Weight.Bold:
+            fmt.setFontWeight(QFont.Weight.Normal)
+        else:
+            fmt.setFontWeight(QFont.Weight.Bold)
         self.textEditor.textCursor().mergeCharFormat(fmt)
 
     def setItalicText(self):
         fmt = QTextCharFormat()
-        fmt.setFontItalic(True)
+        if not self.textEditor.currentCharFormat().fontItalic():
+            fmt.setFontItalic(True)
+        else:
+            fmt.setFontItalic(False)
         self.textEditor.textCursor().mergeCharFormat(fmt)
 
     def setUnderlineText(self):
         fmt = QTextCharFormat()
-        fmt.setFontUnderline(True)
+        if not self.textEditor.currentCharFormat().fontUnderline():
+            fmt.setFontUnderline(True)
+        else:
+            fmt.setFontUnderline(False)
         self.textEditor.textCursor().mergeCharFormat(fmt)
 
     def setStrikeThroughText(self):
         fmt = QTextCharFormat()
-        fmt.setFontStrikeOut(True)
-        self.textEditor.textCursor().mergeCharFormat(fmt)  # Connect actions
+        if not self.textEditor.currentCharFormat().fontStrikeOut():
+            fmt.setFontStrikeOut(True)
+        else:
+            fmt.setFontStrikeOut(False)
+        self.textEditor.textCursor().mergeCharFormat(fmt)
 
     def setFontFamily(self, font):
         fmt = self.textEditor.currentCharFormat()
