@@ -7,6 +7,12 @@ class TestNovel(unittest.TestCase):
         self.novel = Novel()
         print("We are in setUp()")
     
+    def test_init(self):
+        novel = Novel(title="My Novel", genre="Fantasy")
+        self.assertEqual(novel.title, "My Novel")
+        self.assertEqual(novel.genre, "Fantasy")
+        self.assertEqual(novel.chapters, [])
+    
     def test_add_chapter(self):
         print("We are in test_add_chapter()")
         self.novel.add_chapter("Chapter 1", "This is the first chapter.")

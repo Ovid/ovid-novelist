@@ -1,7 +1,9 @@
 from ovid.model.Chapter import Chapter
 
 class Novel:
-    def __init__(self, chapters=None) -> None:
+    def __init__(self, title='Untitled', genre=None, chapters=None) -> None:
+        self.title = title
+        self.genre = genre
         if chapters is None:
             chapters = []
         self.chapters = chapters
