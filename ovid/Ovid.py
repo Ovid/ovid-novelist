@@ -10,7 +10,6 @@ from PyQt6.QtWidgets import (
     QWidget,
 )
 from PyQt6.QtGui import (
-    QAction,
     QShortcut,
     QKeySequence,
     QFont,
@@ -19,6 +18,7 @@ from PyQt6.QtCore import Qt
 from ovid.ui.OvidFont import OvidFont
 from ovid.ui.OvidMenuBar import OvidMenuBar
 from ovid.ui.OvidToolBar import OvidToolBar
+
 
 class Ovid(QMainWindow):
     defaultFontFamily = "Arial"
@@ -36,14 +36,21 @@ class Ovid(QMainWindow):
         self.textEditor = QTextEdit()
         self.textEditor.setFont(QFont(Ovid.defaultFontFamily, Ovid.defaultFontSize))
         self.textEditor.setStyleSheet("background-color: white;")
-        self.textEditor.setViewportMargins(Ovid.defaultMargin, Ovid.defaultMargin, Ovid.defaultMargin, Ovid.defaultMargin)
+        self.textEditor.setViewportMargins(
+            Ovid.defaultMargin,
+            Ovid.defaultMargin,
+            Ovid.defaultMargin,
+            Ovid.defaultMargin,
+        )
         self.setCentralWidget(self.textEditor)
         self.fonts = OvidFont(self)
         self.fonts.setFontSize(Ovid.defaultFontSize)
 
         # Create Menu Bar
-        self.setMenuBar(OvidMenuBar(self))
-        self.addToolBar(Qt.ToolBarArea.TopToolBarArea, OvidToolBar(self))
+        self.menuBar = OvidMenuBar(self)
+        self.setMenuBar(self.menuBar)
+        self.toolBar = OvidToolBar(self)
+        self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.toolBar)
 
         # Shortcuts for text formatting
         QShortcut(QKeySequence("Ctrl+B"), self, self.fonts.setBoldText)
@@ -78,6 +85,7 @@ class Ovid(QMainWindow):
         # Here, you can add logic to add a new chapter to the chapterList
         new_chapter_name = f"Chapter {self.chapterList.count() + 1}"
         self.chapterList.addItem(new_chapter_name)
+
 
 def main():
     app = QApplication(sys.argv)

@@ -1,9 +1,10 @@
 from PyQt6.QtGui import QFont, QTextCharFormat
 
+
 class OvidFont:
     def __init__(self, ovid) -> None:
         self.textEditor = ovid.textEditor
-    
+
     # Per https://www.riverbankcomputing.com/pipermail/pyqt/2024-January/045686.html
     # There appears to be a possible bug in MacOS and Linux PyQt6 where you can select
     # test, and apply formatting to it twice, and it will not remove the formatting.

@@ -1,6 +1,7 @@
 from PyQt6.QtWidgets import QMenuBar
 from PyQt6.QtGui import QAction
 
+
 class OvidMenuBar(QMenuBar):
     def __init__(self, parent):
         super().__init__()
@@ -45,6 +46,30 @@ class OvidMenuBar(QMenuBar):
         toggleSidebarAction = QAction("Toggle Chapter List", self)
         toggleSidebarAction.triggered.connect(self.toggleSidebar)
         show_hide_menu.addAction(toggleSidebarAction)
+
+        # Add toggle action for toolbar in view menu
+        toggleToolbarAction = QAction("Toggle Toolbar", self)
+        toggleToolbarAction.triggered.connect(self.toggleToolbar)
+        show_hide_menu.addAction(toggleToolbarAction)
+
+        hideAllAction = QAction("Hide All", self)
+        hideAllAction.triggered.connect(self.hideAll)
+        show_hide_menu.addAction(hideAllAction)
+
+        showAllAction = QAction("Show All", self)
+        showAllAction.triggered.connect(self.showAll)
+        show_hide_menu.addAction(showAllAction)
+
+    def hideAll(self):
+        self.parent.toolBar.setVisible(False)
+        self.parent.sidebar.setVisible(False)
+
+    def showAll(self):
+        self.parent.toolBar.setVisible(True)
+        self.parent.sidebar.setVisible(True)
+
+    def toggleToolbar(self):
+        self.parent.toolBar.setVisible(not self.parent.toolBar.isVisible())
 
     def toggleSidebar(self):
         self.parent.sidebar.setVisible(not self.parent.sidebar.isVisible())

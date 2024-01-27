@@ -3,6 +3,7 @@ from PyQt6.QtGui import QFont
 from PyQt6.QtCore import Qt
 from .OvidFontComboBox import OvidFontComboBox
 
+
 class OvidToolBar(QToolBar):
     def __init__(self, parent=None):
         super().__init__(parent)

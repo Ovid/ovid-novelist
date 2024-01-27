@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QApplication
 
 app = QApplication([])
 
+
 class TestOvidFontComboBox(unittest.TestCase):
     def setUp(self):
         self.font_combo_box = OvidFontComboBox()
@@ -18,6 +19,7 @@ class TestOvidFontComboBox(unittest.TestCase):
         font = QFont("Verdana")
         self.font_combo_box.moveFontToTop(font)
         self.assertEqual(self.font_combo_box.currentText(), "Verdana")
+
 
 if __name__ == "__main__":
     unittest.main()

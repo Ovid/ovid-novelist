@@ -3,6 +3,7 @@ from unittest.mock import Mock, MagicMock
 from PyQt6.QtGui import QFont, QTextCharFormat
 from ovid.ui.OvidFont import OvidFont
 
+
 class TestOvidFont(unittest.TestCase):
     def setUp(self):
         self.ovid = Mock()
@@ -34,7 +35,11 @@ class TestOvidFont(unittest.TestCase):
 
     def test_setFontSize(self):
         self.font.setFontSize(12)
-        self.assertTrue(self.ovid.textEditor.textCursor().setCharFormat.called or self.ovid.textEditor.textCursor().mergeCharFormat.called)
+        self.assertTrue(
+            self.ovid.textEditor.textCursor().setCharFormat.called
+            or self.ovid.textEditor.textCursor().mergeCharFormat.called
+        )
+
 
 if __name__ == "__main__":
     unittest.main()
