@@ -26,6 +26,7 @@ class OvidFont:
         else:
             fmt.setFontWeight(QFont.Weight.Bold)
         self.textEditor.textCursor().mergeCharFormat(fmt)
+        self.textEditor.currentCharFormat().setCurrentCharFormat(fmt)
 
     def setItalicText(self):
         fmt = QTextCharFormat()

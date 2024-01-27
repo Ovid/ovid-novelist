@@ -1,9 +1,6 @@
 import unittest
 from ovid.ui.OvidFontComboBox import OvidFontComboBox
 from PyQt6.QtGui import QFont
-from PyQt6.QtWidgets import QApplication
-
-app = QApplication([])
 
 
 class TestOvidFontComboBox(unittest.TestCase):

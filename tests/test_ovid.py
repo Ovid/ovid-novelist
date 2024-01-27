@@ -1,8 +1,8 @@
 import sys
 import unittest
-from PyQt6.QtWidgets import QApplication
 from PyQt6.QtTest import QTest
 from ovid.Ovid import Ovid
+from PyQt6.QtWidgets import QApplication
 
 app = QApplication([])
 
