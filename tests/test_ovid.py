@@ -12,7 +12,7 @@ class TestOvid(unittest.TestCase):
         self.ovid = Ovid()
 
     def test_default_values(self):
-        self.assertEqual(Ovid.defaultFontFamily, "Arial")
+        self.assertEqual(Ovid.defaultFontFamily, "Times New Roman")
         self.assertEqual(Ovid.defaultFontSize, 25)
         self.assertEqual(Ovid.defaultMargin, 20)
 
