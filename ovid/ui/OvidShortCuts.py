@@ -1,5 +1,6 @@
 from PyQt6.QtGui import QShortcut, QKeySequence
 
+
 def add_shortcuts(window):
     fonts = window.fonts
     QShortcut(QKeySequence("Ctrl+B"), window, fonts.setBoldText)
