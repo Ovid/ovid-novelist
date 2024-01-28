@@ -36,6 +36,7 @@ class OvidMenuBar(QMenuBar):
             {
                 "Toggle Sidebar": self.toggleSidebar,
                 "Toggle Toolbar": self.toggleToolbar,
+                "Toggle Statusbar": self.toggleStatusbar,
                 "Toggle All": self.toggleAll,
             },
         )
@@ -51,21 +52,27 @@ class OvidMenuBar(QMenuBar):
     def toggleAll(self):
         sidebar = self.parent.sidebar
         toolbar = self.parent.toolBar
+        statusbar = self.parent.statusBar
 
-        if sidebar.isVisible() or toolbar.isVisible():
+        if sidebar.isVisible() or toolbar.isVisible() or statusbar.isVisible(): 
             # if any of them are visible, hide them all
             sidebar.setVisible(False)
             toolbar.setVisible(False)
+            statusbar.setVisible(False)
         else:
             # none of them are visible, show them all
             sidebar.setVisible(True)
             toolbar.setVisible(True)
+            statusbar.setVisible(True)
 
     def toggleToolbar(self):
         self.parent.toolBar.setVisible(not self.parent.toolBar.isVisible())
 
     def toggleSidebar(self):
         self.parent.sidebar.setVisible(not self.parent.sidebar.isVisible())
+    
+    def toggleStatusbar(self):
+        self.parent.statusBar.setVisible(not self.parent.statusBar.isVisible())
 
     def new_novel(self):
         if self.parent.novel is not None:
