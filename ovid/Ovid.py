@@ -1,10 +1,13 @@
 import sys
 from PyQt6.QtWidgets import (
     QApplication,
-    QMainWindow,
     QInputDialog,
+    QMainWindow,
+    QMenu,
 )
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QAction
+
 from ovid.ui.OvidFont import OvidFont
 from ovid.ui.OvidMenuBar import OvidMenuBar
 from ovid.ui.OvidToolBar import OvidToolBar
@@ -57,6 +60,10 @@ class Ovid(QMainWindow):
         self.chapterList.currentItemChanged.connect(self.load_chapter_contents)
         # Connect the itemDoubleClicked signal of the chapterList to the new slot
         self.chapterList.itemDoubleClicked.connect(self.rename_chapter)
+        # Set the context menu policy of the chapterList to custom
+        self.chapterList.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        # Connect the customContextMenuRequested signal of the chapterList to the new slot
+        self.chapterList.customContextMenuRequested.connect(self.show_context_menu)
 
         # Shortcuts for text formatting and manipulation
         add_shortcuts(self)
@@ -102,6 +109,20 @@ class Ovid(QMainWindow):
                 item.chapter.title = new_name
                 # Update the item text in the list
                 item.setText(new_name)
+    
+    def show_context_menu(self, position):
+        # This slot will be called whenever the context menu is requested on the chapterList
+        menu = QMenu()
+
+        # Create an action for the context menu
+        rename_action = QAction('Rename', self)
+        rename_action.triggered.connect(lambda: self.rename_chapter(self.chapterList.currentItem()))
+
+        # Add the action to the context menu
+        menu.addAction(rename_action)
+
+        # Show the context menu at the requested position
+        menu.exec(self.chapterList.mapToGlobal(position))
 
 
 def main():
