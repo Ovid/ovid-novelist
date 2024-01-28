@@ -13,50 +13,33 @@ class OvidMenuBar(QMenuBar):
         self.setup()
 
     def setup(self):
-        # Add menus
-        file_menu = self.addMenu("File")
-        edit_menu = self.addMenu("Edit")
-        show_hide_menu = self.addMenu("Show/Hide")
+        self.add_menu("File", {"New": self.new_novel, "Open": None, "Save": None})
+        self.add_menu(
+            "Edit",
+            {
+                "Bold": self.parent.fonts.setBoldText,
+                "Italic": self.parent.fonts.setItalicText,
+                "Underline": self.parent.fonts.setUnderlineText,
+                "Strikethrough": self.parent.fonts.setStrikeThroughText,
+                "Clear Formatting": self.parent.fonts.clearFormatting,
+            },
+        )
+        self.add_menu(
+            "Show/Hide",
+            {
+                "Toggle Sidebar": self.toggleSidebar,
+                "Toggle Toolbar": self.toggleToolbar,
+                "Toggle All": self.toggleAll,
+            },
+        )
 
-        # Add actions to File menu
-        file_menu_trigger = {
-            "New": self.new_novel,
-            "Open": None,
-            "Save": None
-        }
-        for label, trigger in file_menu_trigger.items():
+    def add_menu(self, menu_name, menu_triggers):
+        menu = self.addMenu(menu_name)
+        for label, trigger in menu_triggers.items():
             action = QAction(label, self)
             if trigger is not None:
                 action.triggered.connect(trigger)
-            file_menu.addAction(action)
-
-        # Add actions to Edit menu
-        edit_menu_trigger = {
-            "Bold": self.parent.fonts.setBoldText,
-            "Italic": self.parent.fonts.setItalicText,
-            "Underline": self.parent.fonts.setUnderlineText,
-            "Strikethrough": self.parent.fonts.setStrikeThroughText,
-            "Clear Formatting": self.parent.fonts.clearFormatting,
-        }
-        for label, trigger in edit_menu_trigger.items():
-            action = QAction(label, self)
-            if trigger is not None:
-                action.triggered.connect(trigger)
-            edit_menu.addAction(action)
-
-        # Add toggle action for sidebar in view menu
-        toggleSidebarAction = QAction("Toggle Chapter List", self)
-        toggleSidebarAction.triggered.connect(self.toggleSidebar)
-        show_hide_menu.addAction(toggleSidebarAction)
-
-        # Add toggle action for toolbar in view menu
-        toggleToolbarAction = QAction("Toggle Toolbar", self)
-        toggleToolbarAction.triggered.connect(self.toggleToolbar)
-        show_hide_menu.addAction(toggleToolbarAction)
-
-        toggleAllAction = QAction("Toggle All", self)
-        toggleAllAction.triggered.connect(self.toggleAll)
-        show_hide_menu.addAction(toggleAllAction)
+            menu.addAction(action)
 
     def toggleAll(self):
         sidebar = self.parent.sidebar
@@ -84,7 +67,9 @@ class OvidMenuBar(QMenuBar):
             msgBox.setIcon(QMessageBox.Icon.Warning)
             msgBox.setText("Creating a new novel will replace your current novel.")
             msgBox.setInformativeText("Do you want to continue?")
-            msgBox.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+            msgBox.setStandardButtons(
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No
+            )
             returnValue = msgBox.exec()
             if returnValue == QMessageBox.StandardButton.No:
                 return
