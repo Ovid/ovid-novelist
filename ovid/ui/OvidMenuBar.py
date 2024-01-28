@@ -19,7 +19,7 @@ class OvidMenuBar(QMenuBar):
         new_action = QAction("New", self)
         open_action = QAction("Open", self)
         save_action = QAction("Save", self)
-        
+
         new_action.triggered.connect(self.new_novel)
 
         file_menu.addAction(new_action)
@@ -78,12 +78,12 @@ class OvidMenuBar(QMenuBar):
 
     def toggleSidebar(self):
         self.parent.sidebar.setVisible(not self.parent.sidebar.isVisible())
-    
+
     def new_novel(self):
         dialog = NewNovelDialog(self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             name = dialog.name_edit.text()
             genre = dialog.genre_edit.text()
             self.parent.setWindowTitle(name)
-            #authors = [dialog.author_list.item(i).text() for i in range(dialog.author_list.count()) if dialog.author_list.item(i).isSelected()]
+            # authors = [dialog.author_list.item(i).text() for i in range(dialog.author_list.count()) if dialog.author_list.item(i).isSelected()]
             # Now you have the name, genre, and authors. You can create a new Novel object and add it to your application.

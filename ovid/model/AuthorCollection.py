@@ -30,13 +30,18 @@ class AuthorCollection:
         if set(new_order) == set(self.authors):
             self.authors = new_order
         else:
-            raise ValueError("New order must contain the same authors as the current collection")
+            raise ValueError(
+                "New order must contain the same authors as the current collection"
+            )
 
     def __str__(self):
         """
         String representation of the AuthorCollection object.
         """
-        return "Authors in collection:\n" + "\n".join(str(author) for author in self.authors)
+        return "Authors in collection:\n" + "\n".join(
+            str(author) for author in self.authors
+        )
+
 
 # Example usage
 # author1 = Author("Jane Doe", email="janedoe@example.com", bio="Jane Doe is a novelist.")
@@ -51,4 +56,3 @@ class AuthorCollection:
 ## Reorder authors
 # collection.reorder_authors([author2, author1])
 # print(collection)
-

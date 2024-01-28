@@ -1,8 +1,8 @@
 import unittest
 from ovid.model.Author import Author
 
-class TestAuthor(unittest.TestCase):
 
+class TestAuthor(unittest.TestCase):
     def test_author_initialization(self):
         author = Author("Jane Doe", "janedoe@example.com", "Jane is a writer.")
         self.assertEqual(author.name, "Jane Doe")
@@ -25,5 +25,6 @@ class TestAuthor(unittest.TestCase):
         self.assertIn("mikedoe@example.com", str(author))
         self.assertIn("Mike is a novelist.", str(author))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

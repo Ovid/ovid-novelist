@@ -11,6 +11,8 @@ class OvidFont:
     # The first time should apply the formatting (bold, italic, etc), and the second
     # time should remove it. This is not working in MacOS and Linux, but it is allegedly
     # working in Windows. This is a workaround for that bug.
+    #
+    # Github: https://github.com/Ovid/ovid-novelist/issues/1
     def clearFormatting(self):
         fmt = QTextCharFormat()
         fmt.setFontWeight(QFont.Weight.Normal)

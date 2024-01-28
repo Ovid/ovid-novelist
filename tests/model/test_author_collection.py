@@ -2,8 +2,8 @@ import unittest
 from ovid.model.Author import Author
 from ovid.model.AuthorCollection import AuthorCollection
 
-class TestAuthorCollection(unittest.TestCase):
 
+class TestAuthorCollection(unittest.TestCase):
     def setUp(self):
         self.author1 = Author("Jane Doe", "janedoe@example.com", "Jane is a writer.")
         self.author2 = Author("John Smith", "johnsmith@example.com", "John is a poet.")
@@ -33,5 +33,6 @@ class TestAuthorCollection(unittest.TestCase):
         self.collection.add_author(self.author1)
         self.assertIn("Jane Doe", str(self.collection))
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     unittest.main()

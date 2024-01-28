@@ -1,4 +1,12 @@
-from PyQt6.QtWidgets import QDialog, QVBoxLayout, QLabel, QLineEdit, QListWidget, QPushButton
+from PyQt6.QtWidgets import (
+    QDialog,
+    QVBoxLayout,
+    QLabel,
+    QLineEdit,
+    QListWidget,
+    QPushButton,
+)
+
 
 class NewNovelDialog(QDialog):
     def __init__(self, author_collection, parent=None):
@@ -22,7 +30,9 @@ class NewNovelDialog(QDialog):
 
         layout.addWidget(ok_button)
 
-        self.name_edit.textChanged.connect(self.check_input)  # Connect the textChanged signal to the check_input slot
+        self.name_edit.textChanged.connect(
+            self.check_input
+        )  # Connect the textChanged signal to the check_input slot
 
         self.setLayout(layout)
         self.layout = layout
