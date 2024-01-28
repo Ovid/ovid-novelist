@@ -9,21 +9,19 @@ class Novel:
             chapters = []
         self.chapters = chapters
 
-    def add_chapter(self, title: str, contents=None) -> Chapter:
+    def add_chapter(self, chapter: Chapter) -> Chapter:
         previous_chapter = self.chapters[-1] if self.chapters else None
-        new_chapter = Chapter(
-            title, previous_chapter=previous_chapter, contents=contents
-        )
+        chapter.previous_chapter = previous_chapter if previous_chapter else None
         if previous_chapter:
-            previous_chapter.next_chapter = new_chapter
-        self.chapters.append(new_chapter)
-        return new_chapter
+            previous_chapter.next_chapter = chapter
+        self.chapters.append(chapter)
+        return chapter
 
     def delete_chapter(self, chapter):
         if chapter in self.chapters:
             index = self.chapters.index(chapter)
             if chapter.previous_chapter:
-                chapter.previous_chapter.next_chapter = chapter.next_chapter
+                chapter.previous_chapter.next_chapter = chapter
             if chapter.next_chapter:
                 chapter.next_chapter.previous_chapter = chapter.previous_chapter
             self.chapters.remove(chapter)
