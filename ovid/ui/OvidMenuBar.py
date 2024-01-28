@@ -16,35 +16,30 @@ class OvidMenuBar(QMenuBar):
         show_hide_menu = self.addMenu("Show/Hide")
 
         # Add actions to File menu
-        new_action = QAction("New", self)
-        open_action = QAction("Open", self)
-        save_action = QAction("Save", self)
-
-        new_action.triggered.connect(self.new_novel)
-
-        file_menu.addAction(new_action)
-        file_menu.addAction(open_action)
-        file_menu.addAction(save_action)
+        file_menu_trigger = {
+            "New": self.new_novel,
+            "Open": None,
+            "Save": None
+        }
+        for label, trigger in file_menu_trigger.items():
+            action = QAction(label, self)
+            if trigger is not None:
+                action.triggered.connect(trigger)
+            file_menu.addAction(action)
 
         # Add actions to Edit menu
-        bold_action = QAction("Bold", self)
-        italic_action = QAction("Italic", self)
-        underline_action = QAction("Underline", self)
-        strikethrough_action = QAction("Strikethrough", self)
-        clearformatting_action = QAction("Clear Formatting", self)
-
-        # Connect actions
-        bold_action.triggered.connect(self.parent.fonts.setBoldText)
-        italic_action.triggered.connect(self.parent.fonts.setItalicText)
-        underline_action.triggered.connect(self.parent.fonts.setUnderlineText)
-        strikethrough_action.triggered.connect(self.parent.fonts.setStrikeThroughText)
-        clearformatting_action.triggered.connect(self.parent.fonts.clearFormatting)
-
-        edit_menu.addAction(bold_action)
-        edit_menu.addAction(italic_action)
-        edit_menu.addAction(underline_action)
-        edit_menu.addAction(strikethrough_action)
-        edit_menu.addAction(clearformatting_action)
+        edit_menu_trigger = {
+            "Bold": self.parent.fonts.setBoldText,
+            "Italic": self.parent.fonts.setItalicText,
+            "Underline": self.parent.fonts.setUnderlineText,
+            "Strikethrough": self.parent.fonts.setStrikeThroughText,
+            "Clear Formatting": self.parent.fonts.clearFormatting,
+        }
+        for label, trigger in edit_menu_trigger.items():
+            action = QAction(label, self)
+            if trigger is not None:
+                action.triggered.connect(trigger)
+            edit_menu.addAction(action)
 
         # Add toggle action for sidebar in view menu
         toggleSidebarAction = QAction("Toggle Chapter List", self)
