@@ -54,7 +54,7 @@ class Ovid(QMainWindow):
         # Create the dockable sidebar
         self.sidebar = OvidDockWidget(self)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.sidebar)
-        self.setWindowTitle(self.sidebar.novel.title)
+        self.setWindowTitle(self.novel.title if self.novel else "Untitled")
 
         self.author_collection = AuthorCollection()
 
