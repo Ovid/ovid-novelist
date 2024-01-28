@@ -31,6 +31,7 @@ class Ovid(QMainWindow):
         # Create the text editor area
         self.textEditor = OvidTextEdit(self)
         self.setCentralWidget(self.textEditor)
+        self.novel = None
 
         # Create our font helpers
         self.fonts = OvidFont(self)

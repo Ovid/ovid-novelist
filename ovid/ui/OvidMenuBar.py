@@ -1,6 +1,9 @@
-from PyQt6.QtWidgets import QMenuBar, QDialog
+from PyQt6.QtWidgets import QMenuBar, QDialog, QMessageBox
 from PyQt6.QtGui import QAction
+
 from ovid.ui.NewNovelDialog import NewNovelDialog
+
+from ovid.model.Novel import Novel
 
 
 class OvidMenuBar(QMenuBar):
@@ -75,10 +78,22 @@ class OvidMenuBar(QMenuBar):
         self.parent.sidebar.setVisible(not self.parent.sidebar.isVisible())
 
     def new_novel(self):
+        if self.parent.novel is not None:
+            # dialog to tell the user that they will lose their work
+            msgBox = QMessageBox()
+            msgBox.setIcon(QMessageBox.Icon.Warning)
+            msgBox.setText("Creating a new novel will replace your current novel.")
+            msgBox.setInformativeText("Do you want to continue?")
+            msgBox.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+            returnValue = msgBox.exec()
+            if returnValue == QMessageBox.StandardButton.No:
+                return
+
         dialog = NewNovelDialog(self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             name = dialog.name_edit.text()
             genre = dialog.genre_edit.text()
             self.parent.setWindowTitle(name)
+            self.parent.novel = Novel(name, genre)
             # authors = [dialog.author_list.item(i).text() for i in range(dialog.author_list.count()) if dialog.author_list.item(i).isSelected()]
             # Now you have the name, genre, and authors. You can create a new Novel object and add it to your application.

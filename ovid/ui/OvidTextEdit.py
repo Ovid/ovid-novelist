@@ -43,12 +43,12 @@ class OvidTextEdit(QTextEdit):
     # override the keyPressEvent to apply our formatting
     # Github: https://github.com/Ovid/ovid-novelist/issues/2
     # def keyPressEvent(self, event):
-        # super().keyPressEvent(event)
-        # if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
-            # cursor = self.textCursor()
-            # cursor.setBlockFormat(self.paragraphFormat)
-            # cursor.movePosition(QTextCursor.MoveOperation.End)
-            # self.setTextCursor(cursor)
+    #     if event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
+    #         cursor = self.textCursor()
+    #         cursor.setBlockFormat(self.paragraphFormat)
+    #         cursor.movePosition(QTextCursor.MoveOperation.End)
+    #         self.setTextCursor(cursor)
+    #     super().keyPressEvent(event)
 
     def insertFromMimeData(self, source):
         cursor = self.textCursor()
