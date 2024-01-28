@@ -2,6 +2,7 @@ import sys
 from PyQt6.QtWidgets import (
     QApplication,
     QInputDialog,
+    QLabel,
     QMainWindow,
     QMenu,
 )
@@ -64,6 +65,16 @@ class Ovid(QMainWindow):
         self.chapterList.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         # Connect the customContextMenuRequested signal of the chapterList to the new slot
         self.chapterList.customContextMenuRequested.connect(self.show_context_menu)
+        
+        # Status bar
+        self.statusBar = self.statusBar()
+        self.wordCountLabel = QLabel()
+        self.statusBar.addWidget(self.wordCountLabel)
+
+        # Connect the textChanged signal of the text editor to the update_word_count method
+        self.textEditor.textChanged.connect(self.update_word_count)
+
+        # create a Qlable fo
 
         # Shortcuts for text formatting and manipulation
         add_shortcuts(self)
@@ -124,6 +135,10 @@ class Ovid(QMainWindow):
         # Show the context menu at the requested position
         menu.exec(self.chapterList.mapToGlobal(position))
 
+    def update_word_count(self):
+        # This slot will be called whenever the text in the text editor changes
+        word_count = len(self.textEditor.toPlainText().split())
+        self.wordCountLabel.setText(f"Chapter Word Count: {word_count}")
 
 def main():
     app = QApplication(sys.argv)
