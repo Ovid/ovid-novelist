@@ -65,7 +65,7 @@ class Ovid(QMainWindow):
         self.chapterList.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
         # Connect the customContextMenuRequested signal of the chapterList to the new slot
         self.chapterList.customContextMenuRequested.connect(self.show_context_menu)
-        
+
         # Status bar
         self.statusBar = self.statusBar()
         self.wordCountLabel = QLabel()
@@ -120,14 +120,16 @@ class Ovid(QMainWindow):
                 item.chapter.title = new_name
                 # Update the item text in the list
                 item.setText(new_name)
-    
+
     def show_context_menu(self, position):
         # This slot will be called whenever the context menu is requested on the chapterList
         menu = QMenu()
 
         # Create an action for the context menu
-        rename_action = QAction('Rename', self)
-        rename_action.triggered.connect(lambda: self.rename_chapter(self.chapterList.currentItem()))
+        rename_action = QAction("Rename", self)
+        rename_action.triggered.connect(
+            lambda: self.rename_chapter(self.chapterList.currentItem())
+        )
 
         # Add the action to the context menu
         menu.addAction(rename_action)
@@ -139,6 +141,7 @@ class Ovid(QMainWindow):
         # This slot will be called whenever the text in the text editor changes
         word_count = len(self.textEditor.toPlainText().split())
         self.wordCountLabel.setText(f"Chapter Word Count: {word_count}")
+
 
 def main():
     app = QApplication(sys.argv)

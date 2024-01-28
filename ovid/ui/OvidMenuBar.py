@@ -5,7 +5,7 @@ import gzip
 import pickle
 
 from ovid.ui.OvidListWidgetChapter import OvidListWidgetChapter
-from ovid.ui.NewNovelDialog import NewNovelDialog
+from ovid.ui.OvidNovelDialog import OvidNovelDialog
 
 from ovid.model.Novel import Novel
 
@@ -81,7 +81,7 @@ class OvidMenuBar(QMenuBar):
             if returnValue == QMessageBox.StandardButton.No:
                 return
 
-        dialog = NewNovelDialog(self)
+        dialog = OvidNovelDialog(self)
         if dialog.exec() == QDialog.DialogCode.Accepted:
             name = dialog.name_edit.text()
             genre = dialog.genre_edit.text()
