@@ -4,6 +4,6 @@ class Chapter:
         self.previous_chapter = previous_chapter
         self.next_chapter = next_chapter
         self.contents = contents
-    
+
     def __str__(self):
         return self.title

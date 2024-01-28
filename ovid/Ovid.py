@@ -64,32 +64,39 @@ class Ovid(QMainWindow):
     def add_chapter(self):
         # This function will be called when the button is clicked
         # Here, you can add logic to add a new chapter to the chapterList
-        chapter_name, ok = QInputDialog.getText(self, 'New Chapter', 'Enter chapter name:')
+        chapter_name, ok = QInputDialog.getText(
+            self, "New Chapter", "Enter chapter name:"
+        )
         if ok and chapter_name:
             new_chapter = Chapter(chapter_name)
             self.novel.add_chapter(new_chapter)
             new_item = OvidListWidgetChapter(new_chapter)
             self.chapterList.addItem(new_item)  # Store the chapter object with the item
             self.chapterList.setCurrentItem(new_item)
-    
+
     def update_chapter_contents(self):
         # Get the currently selected OvidListWidgetChapter
         current_item = self.chapterList.currentItem()
         if isinstance(current_item, OvidListWidgetChapter):
             # Update the chapter.contents
             current_item.chapter.contents = self.textEditor.toHtml()
-    
+
     def load_chapter_contents(self, current_item, previous_item):
         # This slot will be called whenever the current item of the chapterList changes
         if isinstance(current_item, OvidListWidgetChapter):
             # Set the contents of the text editor to the contents of the selected chapter
             self.textEditor.setHtml(current_item.chapter.contents)
-    
+
     def rename_chapter(self, item):
         # This slot will be called whenever an item of the chapterList is double clicked
         if isinstance(item, OvidListWidgetChapter):
             # Open a QInputDialog to get the new name
-            new_name, ok = QInputDialog.getText(self, 'Rename Chapter', 'Enter new chapter name:', text=item.chapter.title)
+            new_name, ok = QInputDialog.getText(
+                self,
+                "Rename Chapter",
+                "Enter new chapter name:",
+                text=item.chapter.title,
+            )
             if ok and new_name:
                 # Rename the chapter
                 item.chapter.title = new_name

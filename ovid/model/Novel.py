@@ -26,5 +26,8 @@ class Novel:
                 chapter.next_chapter.previous_chapter = chapter.previous_chapter
             self.chapters.remove(chapter)
 
+    def clear_chapters(self) -> None:
+        self.chapters = []
+
     def get_chapters(self):
         return self.chapters
