@@ -1,8 +1,10 @@
 from PyQt6.QtWidgets import QMenuBar, QDialog, QMessageBox, QFileDialog
 from PyQt6.QtGui import QAction
-from ovid.ui.OvidListWidgetChapter import OvidListWidgetChapter
+
+import gzip
 import pickle
 
+from ovid.ui.OvidListWidgetChapter import OvidListWidgetChapter
 from ovid.ui.NewNovelDialog import NewNovelDialog
 
 from ovid.model.Novel import Novel
@@ -105,7 +107,7 @@ class OvidMenuBar(QMenuBar):
 
         if filename:
             # Save the novel to the chosen filename
-            with open(filename, "wb") as f:
+            with gzip.open(filename, "wb") as f:
                 pickle.dump(self.parent.novel, f)
 
     def load_novel(self):
@@ -114,7 +116,7 @@ class OvidMenuBar(QMenuBar):
         )
 
         if filename:
-            with open(filename, "rb") as f:
+            with gzip.open(filename, "rb") as f:
                 self.parent.novel = pickle.load(f)
 
             # Clear the current items in the sidebar
