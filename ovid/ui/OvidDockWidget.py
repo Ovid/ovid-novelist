@@ -18,7 +18,7 @@ class OvidDockWidget(QDockWidget):
 
         # Create the button to add new chapters
         self.addChapterButton = QPushButton("Add Chapter")
-        self.addChapterButton.clicked.connect(parent.addChapter)
+        self.addChapterButton.clicked.connect(parent.add_chapter)
         self.sidebarLayout.addWidget(self.addChapterButton)
 
         # Set the widget to the dock

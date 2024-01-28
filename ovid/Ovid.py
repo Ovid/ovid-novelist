@@ -52,7 +52,7 @@ class Ovid(QMainWindow):
         # Shortcuts for text formatting and manipulation
         add_shortcuts(self)
 
-    def addChapter(self):
+    def add_chapter(self):
         # This function will be called when the button is clicked
         # Here, you can add logic to add a new chapter to the chapterList
         new_chapter_name = f"Chapter {self.chapterList.count() + 1}"
