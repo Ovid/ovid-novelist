@@ -33,6 +33,7 @@ class Ovid(QMainWindow):
         self.textEditor = OvidTextEdit(self)
         self.setCentralWidget(self.textEditor)
         self.novel = Novel()
+        self.textEditor.textChanged.connect(self.update_chapter_contents)
 
         # Create our font helpers
         self.fonts = OvidFont(self)
@@ -52,6 +53,10 @@ class Ovid(QMainWindow):
         self.sidebar = OvidDockWidget(self)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.sidebar)
         self.setWindowTitle(self.novel.title if self.novel else "Untitled")
+        # Connect the current item changed signal of the chapterList to the new slot
+        self.chapterList.currentItemChanged.connect(self.load_chapter_contents)
+        # Connect the itemDoubleClicked signal of the chapterList to the new slot
+        self.chapterList.itemDoubleClicked.connect(self.rename_chapter)
 
         # Shortcuts for text formatting and manipulation
         add_shortcuts(self)
@@ -63,7 +68,33 @@ class Ovid(QMainWindow):
         if ok and chapter_name:
             new_chapter = Chapter(chapter_name)
             self.novel.add_chapter(new_chapter)
-            self.chapterList.addItem(OvidListWidgetChapter(new_chapter))  # Store the chapter object with the item
+            new_item = OvidListWidgetChapter(new_chapter)
+            self.chapterList.addItem(new_item)  # Store the chapter object with the item
+            self.chapterList.setCurrentItem(new_item)
+    
+    def update_chapter_contents(self):
+        # Get the currently selected OvidListWidgetChapter
+        current_item = self.chapterList.currentItem()
+        if isinstance(current_item, OvidListWidgetChapter):
+            # Update the chapter.contents
+            current_item.chapter.contents = self.textEditor.toHtml()
+    
+    def load_chapter_contents(self, current_item, previous_item):
+        # This slot will be called whenever the current item of the chapterList changes
+        if isinstance(current_item, OvidListWidgetChapter):
+            # Set the contents of the text editor to the contents of the selected chapter
+            self.textEditor.setHtml(current_item.chapter.contents)
+    
+    def rename_chapter(self, item):
+        # This slot will be called whenever an item of the chapterList is double clicked
+        if isinstance(item, OvidListWidgetChapter):
+            # Open a QInputDialog to get the new name
+            new_name, ok = QInputDialog.getText(self, 'Rename Chapter', 'Enter new chapter name:', text=item.chapter.title)
+            if ok and new_name:
+                # Rename the chapter
+                item.chapter.title = new_name
+                # Update the item text in the list
+                item.setText(new_name)
 
 
 def main():
