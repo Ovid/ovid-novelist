@@ -142,8 +142,8 @@ class Ovid(QMainWindow):
 
 def main():
     app = QApplication(sys.argv)
-    ex = Ovid()
-    ex.show()
+    ovid = Ovid()
+    ovid.show()
     sys.exit(app.exec())
 
 
