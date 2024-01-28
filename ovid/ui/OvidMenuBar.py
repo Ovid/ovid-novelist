@@ -56,21 +56,22 @@ class OvidMenuBar(QMenuBar):
         toggleToolbarAction.triggered.connect(self.toggleToolbar)
         show_hide_menu.addAction(toggleToolbarAction)
 
-        hideAllAction = QAction("Hide All", self)
-        hideAllAction.triggered.connect(self.hideAll)
-        show_hide_menu.addAction(hideAllAction)
+        toggleAllAction = QAction("Toggle All", self)
+        toggleAllAction.triggered.connect(self.toggleAll)
+        show_hide_menu.addAction(toggleAllAction)
 
-        showAllAction = QAction("Show All", self)
-        showAllAction.triggered.connect(self.showAll)
-        show_hide_menu.addAction(showAllAction)
+    def toggleAll(self):
+        sidebar = self.parent.sidebar
+        toolbar = self.parent.toolBar
 
-    def hideAll(self):
-        self.parent.toolBar.setVisible(False)
-        self.parent.sidebar.setVisible(False)
-
-    def showAll(self):
-        self.parent.toolBar.setVisible(True)
-        self.parent.sidebar.setVisible(True)
+        if sidebar.isVisible() or toolbar.isVisible():
+            # if any of them are visible, hide them all
+            sidebar.setVisible(False)
+            toolbar.setVisible(False)
+        else:
+            # none of them are visible, show them all
+            sidebar.setVisible(True)
+            toolbar.setVisible(True)
 
     def toggleToolbar(self):
         self.parent.toolBar.setVisible(not self.parent.toolBar.isVisible())
