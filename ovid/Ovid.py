@@ -3,18 +3,15 @@ from PyQt6.QtWidgets import (
     QApplication,
     QMainWindow,
 )
-from PyQt6.QtGui import (
-    QShortcut,
-    QKeySequence,
-)
 from PyQt6.QtCore import Qt
 from ovid.ui.OvidFont import OvidFont
 from ovid.ui.OvidMenuBar import OvidMenuBar
 from ovid.ui.OvidToolBar import OvidToolBar
 from ovid.ui.OvidDockWidget import OvidDockWidget
 from ovid.ui.OvidTextEdit import OvidTextEdit
+from ovid.ui.OvidShortCuts import add_shortcuts
 
-from ovid.model.AuthorCollection import AuthorCollection
+from ovid.model.Novel import Novel
 
 
 class Ovid(QMainWindow):
@@ -28,10 +25,11 @@ class Ovid(QMainWindow):
 
     def initUI(self):
         self.setGeometry(100, 100, 1200, 800)
+
         # Create the text editor area
         self.textEditor = OvidTextEdit(self)
         self.setCentralWidget(self.textEditor)
-        self.novel = None
+        self.novel = Novel()
 
         # Create our font helpers
         self.fonts = OvidFont(self)
@@ -41,22 +39,18 @@ class Ovid(QMainWindow):
         # Create Menu Bar
         self.menuBar = OvidMenuBar(self)
         self.setMenuBar(self.menuBar)
+
+        # Create the toolbar
         self.toolBar = OvidToolBar(self)
         self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.toolBar)
-
-        # Shortcuts for text formatting
-        QShortcut(QKeySequence("Ctrl+B"), self, self.fonts.setBoldText)
-        QShortcut(QKeySequence("Ctrl+I"), self, self.fonts.setItalicText)
-        QShortcut(QKeySequence("Ctrl+U"), self, self.fonts.setUnderlineText)
-        QShortcut(QKeySequence("Ctrl+T"), self, self.fonts.setStrikeThroughText)
-        QShortcut(QKeySequence("Ctrl+Shift+C"), self, self.fonts.clearFormatting)
 
         # Create the dockable sidebar
         self.sidebar = OvidDockWidget(self)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.sidebar)
         self.setWindowTitle(self.novel.title if self.novel else "Untitled")
 
-        self.author_collection = AuthorCollection()
+        # Shortcuts for text formatting and manipulation
+        add_shortcuts(self)
 
     def addChapter(self):
         # This function will be called when the button is clicked
