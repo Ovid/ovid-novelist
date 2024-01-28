@@ -9,17 +9,17 @@ class OvidDockWidget(QDockWidget):
         self.setMaximumWidth(200)  # Set a preferred width for the sidebar
 
         # Create a widget to hold the list and the button
-        self.sidebarWidget = QWidget()
-        self.sidebarLayout = QVBoxLayout(self.sidebarWidget)
+        self.sidebar_widget = QWidget()
+        self.sidebar_layout = QVBoxLayout(self.sidebar_widget)
 
         # Create the QListWidget for chapters
-        self.chapterList = QListWidget()
-        self.sidebarLayout.addWidget(self.chapterList)
+        parent.chapterList = QListWidget()
+        self.sidebar_layout.addWidget(parent.chapterList)
 
         # Create the button to add new chapters
-        self.addChapterButton = QPushButton("Add Chapter")
-        self.addChapterButton.clicked.connect(parent.add_chapter)
-        self.sidebarLayout.addWidget(self.addChapterButton)
+        self.add_chapter_buttn = QPushButton("Add Chapter")
+        self.add_chapter_buttn.clicked.connect(parent.add_chapter)
+        self.sidebar_layout.addWidget(self.add_chapter_buttn)
 
         # Set the widget to the dock
-        self.setWidget(self.sidebarWidget)
+        self.setWidget(self.sidebar_widget)

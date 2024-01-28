@@ -2,6 +2,7 @@ import sys
 from PyQt6.QtWidgets import (
     QApplication,
     QMainWindow,
+    QInputDialog,
 )
 from PyQt6.QtCore import Qt
 from ovid.ui.OvidFont import OvidFont
@@ -10,8 +11,10 @@ from ovid.ui.OvidToolBar import OvidToolBar
 from ovid.ui.OvidDockWidget import OvidDockWidget
 from ovid.ui.OvidTextEdit import OvidTextEdit
 from ovid.ui.OvidShortCuts import add_shortcuts
+from ovid.ui.OvidListWidgetChapter import OvidListWidgetChapter
 
 from ovid.model.Novel import Novel
+from ovid.model.Chapter import Chapter
 
 
 class Ovid(QMainWindow):
@@ -45,6 +48,7 @@ class Ovid(QMainWindow):
         self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.toolBar)
 
         # Create the dockable sidebar
+        self.chapterList = None
         self.sidebar = OvidDockWidget(self)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.sidebar)
         self.setWindowTitle(self.novel.title if self.novel else "Untitled")
@@ -55,8 +59,11 @@ class Ovid(QMainWindow):
     def add_chapter(self):
         # This function will be called when the button is clicked
         # Here, you can add logic to add a new chapter to the chapterList
-        new_chapter_name = f"Chapter {self.chapterList.count() + 1}"
-        self.chapterList.addItem(new_chapter_name)
+        chapter_name, ok = QInputDialog.getText(self, 'New Chapter', 'Enter chapter name:')
+        if ok and chapter_name:
+            new_chapter = Chapter(chapter_name)
+            self.novel.add_chapter(new_chapter)
+            self.chapterList.addItem(OvidListWidgetChapter(new_chapter))  # Store the chapter object with the item
 
 
 def main():
