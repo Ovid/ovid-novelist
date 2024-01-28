@@ -1,13 +1,11 @@
 import sys
 from PyQt6.QtWidgets import (
-    QTextEdit,
     QApplication,
     QMainWindow,
 )
 from PyQt6.QtGui import (
     QShortcut,
     QKeySequence,
-    QFont,
 )
 from PyQt6.QtCore import Qt
 from ovid.ui.OvidFont import OvidFont
