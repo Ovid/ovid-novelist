@@ -12,6 +12,9 @@ class OvidDockWidget(QDockWidget):
         self.sidebar_widget = QWidget()
         self.sidebar_layout = QVBoxLayout(self.sidebar_widget)
 
+        # Assuming self.sidebar is the QDockWidget instance
+        self.sidebar_layout.setContentsMargins(0, 0, 0, 0)  # Set the margins to 0
+
         # Create the QListWidget for chapters
         parent.chapterList = QListWidget()
         self.sidebar_layout.addWidget(parent.chapterList)
