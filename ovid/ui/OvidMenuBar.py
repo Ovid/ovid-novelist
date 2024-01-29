@@ -54,7 +54,7 @@ class OvidMenuBar(QMenuBar):
         toolbar = self.parent.toolBar
         statusbar = self.parent.statusBar
 
-        if sidebar.isVisible() or toolbar.isVisible() or statusbar.isVisible(): 
+        if sidebar.isVisible() or toolbar.isVisible() or statusbar.isVisible():
             # if any of them are visible, hide them all
             sidebar.setVisible(False)
             toolbar.setVisible(False)
@@ -70,7 +70,7 @@ class OvidMenuBar(QMenuBar):
 
     def toggleSidebar(self):
         self.parent.sidebar.setVisible(not self.parent.sidebar.isVisible())
-    
+
     def toggleStatusbar(self):
         self.parent.statusBar.setVisible(not self.parent.statusBar.isVisible())
 
