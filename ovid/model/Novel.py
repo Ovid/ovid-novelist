@@ -2,12 +2,13 @@ from ovid.model.Chapter import Chapter
 
 
 class Novel:
-    def __init__(self, title="Untitled", genre=None, chapters=None) -> None:
+    def __init__(self, title=None, filename=None, genre=None, chapters=None) -> None:
         self.title = title
         self.genre = genre
         if chapters is None:
             chapters = []
         self.chapters = chapters
+        self.filename = filename
 
     def add_chapter(self, chapter: Chapter) -> Chapter:
         previous_chapter = self.chapters[-1] if self.chapters else None

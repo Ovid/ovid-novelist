@@ -19,34 +19,73 @@ class OvidMenuBar(QMenuBar):
     def setup(self):
         self.add_menu(
             "File",
-            {"New": self.new_novel, "Open": self.load_novel, "Save": self.save_novel},
+            {
+                "New": {"trigger": self.new_novel, "shortcut": "Ctrl+N"},
+                "Open": {"trigger": self.load_novel, "shortcut": "Ctrl+O"},
+                "Save": {"trigger": self.save_novel, "shortcut": "Ctrl+S"},
+                "Save As": {"trigger": self.save_as_novel, "shortcut": "Ctrl+Shift+S"},
+            },
         )
         self.add_menu(
             "Edit",
             {
-                "Bold": self.parent.fonts.setBoldText,
-                "Italic": self.parent.fonts.setItalicText,
-                "Underline": self.parent.fonts.setUnderlineText,
-                "Strikethrough": self.parent.fonts.setStrikeThroughText,
-                "Clear Formatting": self.parent.fonts.clearFormatting,
+                "Undo": {"trigger": self.parent.textEditor.undo, "shortcut": "Ctrl+Z"},
+                "Redo": {"trigger": self.parent.textEditor.redo, "shortcut": "Ctrl+Y"},
+                "Cut": {"trigger": self.parent.textEditor.cut, "shortcut": "Ctrl+X"},
+                "Copy": {"trigger": self.parent.textEditor.copy, "shortcut": "Ctrl+C"},
+                "Paste": {
+                    "trigger": self.parent.textEditor.paste,
+                    "shortcut": "Ctrl+V",
+                },
+                "Select All": {
+                    "trigger": self.parent.textEditor.selectAll,
+                    "shortcut": "Ctrl+A",
+                },
+            },
+        )
+        self.add_menu(
+            "Format",
+            {
+                "Bold": {
+                    "trigger": self.parent.fonts.setBoldText,
+                    "shortcut": "Ctrl+B",
+                },
+                "Italic": {
+                    "trigger": self.parent.fonts.setItalicText,
+                    "shortcut": "Ctrl+I",
+                },
+                "Underline": {
+                    "trigger": self.parent.fonts.setUnderlineText,
+                    "shortcut": "Ctrl+U",
+                },
+                "Strikethrough": {
+                    "trigger": self.parent.fonts.setStrikeThroughText,
+                    "shortcut": "Ctrl+Shift+T",
+                },
+                "Clear Formatting": {
+                    "trigger": self.parent.fonts.clearFormatting,
+                    "shortcut": "Ctrl+Shift+C",
+                },
             },
         )
         self.add_menu(
             "Show/Hide",
             {
-                "Toggle Sidebar": self.toggleSidebar,
-                "Toggle Toolbar": self.toggleToolbar,
-                "Toggle Statusbar": self.toggleStatusbar,
-                "Toggle All": self.toggleAll,
+                "Toggle Sidebar": {"trigger": self.toggleSidebar},
+                "Toggle Toolbar": {"trigger": self.toggleToolbar},
+                "Toggle Statusbar": {"trigger": self.toggleStatusbar},
+                "Toggle All": {"trigger": self.toggleAll, "shortcut": "Ctrl+T"},
             },
         )
 
     def add_menu(self, menu_name, menu_triggers):
         menu = self.addMenu(menu_name)
-        for label, trigger in menu_triggers.items():
+        for label, behaviors in menu_triggers.items():
             action = QAction(label, self)
-            if trigger is not None:
-                action.triggered.connect(trigger)
+            if behaviors is not None:
+                if "shortcut" in behaviors:
+                    action.setShortcut(behaviors["shortcut"])
+                action.triggered.connect(behaviors["trigger"])
             menu.addAction(action)
 
     def toggleAll(self):
@@ -92,12 +131,21 @@ class OvidMenuBar(QMenuBar):
         if dialog.exec() == QDialog.DialogCode.Accepted:
             name = dialog.name_edit.text()
             genre = dialog.genre_edit.text()
-            self.parent.setWindowTitle(name)
+            self.parent.setWindow: whileTitle(name)
             self.parent.novel = Novel(name, genre)
             # authors = [dialog.author_list.item(i).text() for i in range(dialog.author_list.count()) if dialog.author_list.item(i).isSelected()]
             # Now you have the name, genre, and authors. You can create a new Novel object and add it to your application.
 
     def save_novel(self):
+        if self.parent.novel is None:
+            # If there is no novel, prompt the user to save as a new novel
+            self.save_as_novel()
+        else:
+            # Save the current novel to the current filename
+            with gzip.open(self.parent.novel.filename, "wb") as f:
+                pickle.dump(self.parent.novel, f)
+
+    def save_as_novel(self):
         # Clear the current chapters in the novel
         self.parent.novel.clear_chapters()
 
@@ -113,7 +161,7 @@ class OvidMenuBar(QMenuBar):
         )
 
         if filename:
-            # Save the novel to the chosen filename
+            self.parent.novel.filename = filename
             with gzip.open(filename, "wb") as f:
                 pickle.dump(self.parent.novel, f)
 
@@ -123,8 +171,17 @@ class OvidMenuBar(QMenuBar):
         )
 
         if filename:
-            with gzip.open(filename, "rb") as f:
-                self.parent.novel = pickle.load(f)
+            try:
+                with gzip.open(filename, "rb") as f:
+                    self.parent.novel = pickle.load(f)
+            except Exception as e:
+                msgBox = QMessageBox()
+                msgBox.setIcon(QMessageBox.Icon.Critical)
+                msgBox.setText("Error loading novel")
+                msgBox.setInformativeText(str(e))
+                msgBox.exec()
+                return
+            self.parent.novel.filename = filename
 
             # Clear the current items in the sidebar
             self.parent.chapterList.clear()
