@@ -15,7 +15,7 @@ class TestOvidFont(unittest.TestCase):
 
     def test_setBoldText(self):
         self.font.setBoldText()
-        self.ovid.textEditor.textCursor().mergeCharFormat.assert_called()
+        self.ovid.textEditor.setFontWeight.assert_called()
 
     def test_setItalicText(self):
         self.font.setItalicText()

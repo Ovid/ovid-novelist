@@ -1,12 +1,13 @@
 import unittest
-from PyQt6.QtWidgets import QApplication
 from ovid.Ovid import Ovid
+from PyQt6.QtWidgets import QApplication
+
+app = QApplication([])
 
 
 class TestOvidMenuBar(unittest.TestCase):
     def setUp(self):
         # must create application before instantiating widgets
-        self.app = QApplication([])
         self.parent = Ovid()
         self.menuBar = self.parent.menuBar
         self.parent.toolBar.setVisible(True)

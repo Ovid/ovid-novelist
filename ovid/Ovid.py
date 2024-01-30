@@ -1,27 +1,28 @@
 import sys
 from PyQt6.QtWidgets import (
-    QTextEdit,
     QApplication,
+    QInputDialog,
+    QLabel,
     QMainWindow,
-    QDockWidget,
-    QListWidget,
-    QPushButton,
-    QVBoxLayout,
-    QWidget,
-)
-from PyQt6.QtGui import (
-    QShortcut,
-    QKeySequence,
-    QFont,
+    QMenu,
 )
 from PyQt6.QtCore import Qt
+from PyQt6.QtGui import QAction
+
 from ovid.ui.OvidFont import OvidFont
 from ovid.ui.OvidMenuBar import OvidMenuBar
 from ovid.ui.OvidToolBar import OvidToolBar
+from ovid.ui.OvidDockWidget import OvidDockWidget
+from ovid.ui.OvidTextEdit import OvidTextEdit
+from ovid.ui.OvidListWidgetChapter import OvidListWidgetChapter
+from ovid.ui.Utils import setNovel
+
+from ovid.model.Novel import Novel
+from ovid.model.Chapter import Chapter
 
 
 class Ovid(QMainWindow):
-    defaultFontFamily = "Arial"
+    defaultFontFamily = "Times New Roman"
     defaultFontSize = 25
     defaultMargin = 20
 
@@ -30,67 +31,124 @@ class Ovid(QMainWindow):
         self.initUI()
 
     def initUI(self):
-        self.setWindowTitle("Ovid")
         self.setGeometry(100, 100, 1200, 800)
+
         # Create the text editor area
-        self.textEditor = QTextEdit()
-        self.textEditor.setFont(QFont(Ovid.defaultFontFamily, Ovid.defaultFontSize))
-        self.textEditor.setStyleSheet("background-color: white;")
-        self.textEditor.setViewportMargins(
-            Ovid.defaultMargin,
-            Ovid.defaultMargin,
-            Ovid.defaultMargin,
-            Ovid.defaultMargin,
-        )
+        self.textEditor = OvidTextEdit(self)
         self.setCentralWidget(self.textEditor)
+        self.textEditor.textChanged.connect(self.update_chapter_contents)
+        self.novel = None
+
+        # Create our font helpers
         self.fonts = OvidFont(self)
+        self.fonts.setFontFamily(Ovid.defaultFontFamily)
         self.fonts.setFontSize(Ovid.defaultFontSize)
 
         # Create Menu Bar
         self.menuBar = OvidMenuBar(self)
         self.setMenuBar(self.menuBar)
+
+        # Create the toolbar
         self.toolBar = OvidToolBar(self)
         self.addToolBar(Qt.ToolBarArea.TopToolBarArea, self.toolBar)
 
-        # Shortcuts for text formatting
-        QShortcut(QKeySequence("Ctrl+B"), self, self.fonts.setBoldText)
-        QShortcut(QKeySequence("Ctrl+I"), self, self.fonts.setItalicText)
-        QShortcut(QKeySequence("Ctrl+U"), self, self.fonts.setUnderlineText)
-        QShortcut(QKeySequence("Ctrl+T"), self, self.fonts.setStrikeThroughText)
-        QShortcut(QKeySequence("Ctrl+Shift+C"), self, self.fonts.clearFormatting)
-
         # Create the dockable sidebar
-        self.sidebar = QDockWidget("Chapters", self)
-        self.sidebar.setMaximumWidth(200)  # Set a preferred width for the sidebar
+        self.chapterList = None
+        self.sidebar = OvidDockWidget(self)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.sidebar)
+        title = self.novel.title if self.novel else None
+        self.setWindowTitle(title if title else "Untitled")
+        # Connect the current item changed signal of the chapterList to the new slot
+        self.chapterList.currentItemChanged.connect(self.load_chapter_contents)
+        # Connect the itemDoubleClicked signal of the chapterList to the new slot
+        self.chapterList.itemDoubleClicked.connect(self.rename_chapter)
+        # Set the context menu policy of the chapterList to custom
+        self.chapterList.setContextMenuPolicy(Qt.ContextMenuPolicy.CustomContextMenu)
+        # Connect the customContextMenuRequested signal of the chapterList to the new slot
+        self.chapterList.customContextMenuRequested.connect(self.show_context_menu)
 
-        # Create a widget to hold the list and the button
-        self.sidebarWidget = QWidget()
-        self.sidebarLayout = QVBoxLayout(self.sidebarWidget)
+        # Status bar
+        self.statusBar = self.statusBar()
+        self.wordCountLabel = QLabel()
+        self.statusBar.addWidget(self.wordCountLabel)
 
-        # Create the QListWidget for chapters
-        self.chapterList = QListWidget()
-        self.sidebarLayout.addWidget(self.chapterList)
+        # Connect the textChanged signal of the text editor to the update_word_count method
+        self.textEditor.textChanged.connect(self.update_word_count)
 
-        # Create the button to add new chapters
-        self.addChapterButton = QPushButton("Add Chapter")
-        self.addChapterButton.clicked.connect(self.addChapter)
-        self.sidebarLayout.addWidget(self.addChapterButton)
+        novel = Novel()
+        novel.add_chapter(Chapter("Chapter 1"))
+        setNovel(self, novel)
 
-        # Set the widget to the dock
-        self.sidebar.setWidget(self.sidebarWidget)
-
-    def addChapter(self):
+    def add_chapter(self):
         # This function will be called when the button is clicked
         # Here, you can add logic to add a new chapter to the chapterList
-        new_chapter_name = f"Chapter {self.chapterList.count() + 1}"
-        self.chapterList.addItem(new_chapter_name)
+        chapter_name, ok = QInputDialog.getText(
+            self, "New Chapter", "Enter chapter name:"
+        )
+        if ok and chapter_name:
+            new_chapter = Chapter(chapter_name)
+            self.novel.add_chapter(new_chapter)
+            new_item = OvidListWidgetChapter(new_chapter)
+            self.chapterList.addItem(new_item)  # Store the chapter object with the item
+            self.chapterList.setCurrentItem(new_item)
+
+    def update_chapter_contents(self):
+        # Get the currently selected OvidListWidgetChapter
+        current_item = self.chapterList.currentItem()
+        if isinstance(current_item, OvidListWidgetChapter):
+            # Update the chapter.contents
+            current_item.chapter.contents = self.textEditor.toHtml()
+            self.novel.saved = False
+
+    def load_chapter_contents(self, current_item, previous_item):
+        # This slot will be called whenever the current item of the chapterList changes
+        if isinstance(current_item, OvidListWidgetChapter):
+            # Set the contents of the text editor to the contents of the selected chapter
+            self.textEditor.setHtml(current_item.chapter.contents)
+            self.novel.set_current_chapter(current_item.chapter)
+
+    def rename_chapter(self, item):
+        # This slot will be called whenever an item of the chapterList is double clicked
+        if isinstance(item, OvidListWidgetChapter):
+            # Open a QInputDialog to get the new name
+            new_name, ok = QInputDialog.getText(
+                self,
+                "Rename Chapter",
+                "Enter new chapter name:",
+                text=item.chapter.title,
+            )
+            if ok and new_name:
+                # Rename the chapter
+                item.chapter.title = new_name
+                # Update the item text in the list
+                item.setText(new_name)
+
+    def show_context_menu(self, position):
+        # This slot will be called whenever the context menu is requested on the chapterList
+        menu = QMenu()
+
+        # Create an action for the context menu
+        rename_action = QAction("Rename", self)
+        rename_action.triggered.connect(
+            lambda: self.rename_chapter(self.chapterList.currentItem())
+        )
+
+        # Add the action to the context menu
+        menu.addAction(rename_action)
+
+        # Show the context menu at the requested position
+        menu.exec(self.chapterList.mapToGlobal(position))
+
+    def update_word_count(self):
+        # This slot will be called whenever the text in the text editor changes
+        word_count = len(self.textEditor.toPlainText().split())
+        self.wordCountLabel.setText(f"Chapter Word Count: {word_count}")
 
 
 def main():
     app = QApplication(sys.argv)
-    ex = Ovid()
-    ex.show()
+    ovid = Ovid()
+    ovid.show()
     sys.exit(app.exec())
 
 
