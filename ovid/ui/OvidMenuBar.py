@@ -24,6 +24,7 @@ class OvidMenuBar(QMenuBar):
                 "Open": {"trigger": self.load_novel, "shortcut": "Ctrl+O"},
                 "Save": {"trigger": self.save_novel, "shortcut": "Ctrl+S"},
                 "Save As": {"trigger": self.save_as_novel, "shortcut": "Ctrl+Shift+S"},
+                "Quit": {"trigger": self.quit, "shortcut": "Ctrl+Q"},
             },
         )
         self.add_menu(
@@ -159,6 +160,7 @@ class OvidMenuBar(QMenuBar):
             # Save the current novel to the current filename
             with gzip.open(self.parent.novel.filename, "wb") as f:
                 pickle.dump(self.parent.novel, f)
+            self.parent.novel.saved = True
 
     def save_as_novel(self):
         # Clear the current chapters in the novel
@@ -182,6 +184,7 @@ class OvidMenuBar(QMenuBar):
             self.parent.novel.filename = filename
             with gzip.open(filename, "wb") as f:
                 pickle.dump(self.parent.novel, f)
+            self.parent.novel.saved = True
 
     def load_novel(self):
         filename, _ = QFileDialog.getOpenFileName(
@@ -202,3 +205,27 @@ class OvidMenuBar(QMenuBar):
             novel.filename = filename
 
             setNovel(self.parent, novel)
+
+            # set this to true to ensure that if we close the novel immediately
+            # after loading, we don't get prompted to save
+            novel.saved = True
+
+    def quit(self):
+        # if novel is not saved, prompt the user to save
+        if not self.parent.novel.saved:
+            msgBox = QMessageBox()
+            msgBox.setIcon(QMessageBox.Icon.Warning)
+            msgBox.setText("You have unsaved changes.")
+            msgBox.setInformativeText("Do you want to save before quitting?")
+            msgBox.setStandardButtons(
+                QMessageBox.StandardButton.Save
+                | QMessageBox.StandardButton.Discard
+                | QMessageBox.StandardButton.Cancel
+            )
+            msgBox.setDefaultButton(QMessageBox.StandardButton.Save)
+            returnValue = msgBox.exec()
+            if returnValue == QMessageBox.StandardButton.Save:
+                self.save_novel()
+            elif returnValue == QMessageBox.StandardButton.Cancel:
+                return
+        self.parent.close()

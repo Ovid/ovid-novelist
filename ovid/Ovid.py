@@ -98,6 +98,7 @@ class Ovid(QMainWindow):
         if isinstance(current_item, OvidListWidgetChapter):
             # Update the chapter.contents
             current_item.chapter.contents = self.textEditor.toHtml()
+            self.novel.saved = False
 
     def load_chapter_contents(self, current_item, previous_item):
         # This slot will be called whenever the current item of the chapterList changes

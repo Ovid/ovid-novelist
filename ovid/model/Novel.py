@@ -10,6 +10,7 @@ class Novel:
         self.chapters = chapters
         self.filename = filename
         self.currentChapter = None
+        self.saved = True
 
     def set_current_chapter(self, chapter: Chapter) -> None:
         self.currentChapter = chapter
