@@ -14,7 +14,6 @@ from ovid.ui.OvidMenuBar import OvidMenuBar
 from ovid.ui.OvidToolBar import OvidToolBar
 from ovid.ui.OvidDockWidget import OvidDockWidget
 from ovid.ui.OvidTextEdit import OvidTextEdit
-from ovid.ui.OvidShortCuts import add_shortcuts
 from ovid.ui.OvidListWidgetChapter import OvidListWidgetChapter
 
 from ovid.model.Novel import Novel
@@ -56,7 +55,8 @@ class Ovid(QMainWindow):
         self.chapterList = None
         self.sidebar = OvidDockWidget(self)
         self.addDockWidget(Qt.DockWidgetArea.LeftDockWidgetArea, self.sidebar)
-        self.setWindowTitle(self.novel.title if self.novel else "Untitled")
+        title = self.novel.title if self.novel else None
+        self.setWindowTitle(title if title else "Untitled")
         # Connect the current item changed signal of the chapterList to the new slot
         self.chapterList.currentItemChanged.connect(self.load_chapter_contents)
         # Connect the itemDoubleClicked signal of the chapterList to the new slot
@@ -73,11 +73,6 @@ class Ovid(QMainWindow):
 
         # Connect the textChanged signal of the text editor to the update_word_count method
         self.textEditor.textChanged.connect(self.update_word_count)
-
-        # create a Qlable fo
-
-        # Shortcuts for text formatting and manipulation
-        add_shortcuts(self)
 
     def add_chapter(self):
         # This function will be called when the button is clicked
