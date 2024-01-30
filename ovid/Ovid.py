@@ -79,12 +79,16 @@ class Ovid(QMainWindow):
         novel.add_chapter(Chapter("Chapter 1"))
         setNovel(self, novel)
 
-    def add_chapter(self):
+    def add_chapter(self, maybe_chapter_name=None):
         # This function will be called when the button is clicked
         # Here, you can add logic to add a new chapter to the chapterList
-        chapter_name, ok = QInputDialog.getText(
-            self, "New Chapter", "Enter chapter name:"
-        )
+        if maybe_chapter_name is None:
+            chapter_name, ok = QInputDialog.getText(
+                self, "New Chapter", "Enter chapter name:"
+            )
+        else:
+            chapter_name = maybe_chapter_name
+            ok = True
         if ok and chapter_name:
             new_chapter = Chapter(chapter_name)
             self.novel.add_chapter(new_chapter)
