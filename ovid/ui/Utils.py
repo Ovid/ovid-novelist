@@ -13,6 +13,18 @@ def setNovel(ovid, novel):
 
     # Select the first chapter and display its contents in the main window
     if ovid.novel.chapters:
-        first_chapter = novel.chapters[0]
-        ovid.chapterList.setCurrentItem(ovid.chapterList.item(0))
-        ovid.textEditor.setText(first_chapter.contents)
+        # check if novel has a currentChapter attribute
+        has_current_chapter = hasattr(novel, "currentChapter")
+        current_chapter = (
+            novel.chapters[0]
+            if (not has_current_chapter or not novel.currentChapter)
+            else novel.currentChapter
+        )
+
+        # Set the current chapter in the sidebar
+        for i in range(ovid.chapterList.count()):
+            chapter_item = ovid.chapterList.item(i)
+            if chapter_item.chapter == current_chapter:
+                ovid.chapterList.setCurrentItem(chapter_item)
+                break
+        ovid.textEditor.setText(current_chapter.contents)

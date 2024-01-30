@@ -104,6 +104,7 @@ class Ovid(QMainWindow):
         if isinstance(current_item, OvidListWidgetChapter):
             # Set the contents of the text editor to the contents of the selected chapter
             self.textEditor.setHtml(current_item.chapter.contents)
+            self.novel.set_current_chapter(current_item.chapter)
 
     def rename_chapter(self, item):
         # This slot will be called whenever an item of the chapterList is double clicked

@@ -9,6 +9,10 @@ class Novel:
             chapters = []
         self.chapters = chapters
         self.filename = filename
+        self.currentChapter = None
+
+    def set_current_chapter(self, chapter: Chapter) -> None:
+        self.currentChapter = chapter
 
     def add_chapter(self, chapter: Chapter) -> Chapter:
         previous_chapter = self.chapters[-1] if self.chapters else None
