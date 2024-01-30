@@ -15,6 +15,7 @@ from ovid.ui.OvidToolBar import OvidToolBar
 from ovid.ui.OvidDockWidget import OvidDockWidget
 from ovid.ui.OvidTextEdit import OvidTextEdit
 from ovid.ui.OvidListWidgetChapter import OvidListWidgetChapter
+from ovid.ui.Utils import setNovel
 
 from ovid.model.Novel import Novel
 from ovid.model.Chapter import Chapter
@@ -35,8 +36,8 @@ class Ovid(QMainWindow):
         # Create the text editor area
         self.textEditor = OvidTextEdit(self)
         self.setCentralWidget(self.textEditor)
-        self.novel = Novel()
         self.textEditor.textChanged.connect(self.update_chapter_contents)
+        self.novel = None
 
         # Create our font helpers
         self.fonts = OvidFont(self)
@@ -73,6 +74,10 @@ class Ovid(QMainWindow):
 
         # Connect the textChanged signal of the text editor to the update_word_count method
         self.textEditor.textChanged.connect(self.update_word_count)
+
+        novel = Novel()
+        novel.add_chapter(Chapter("Chapter 1"))
+        setNovel(self, novel)
 
     def add_chapter(self):
         # This function will be called when the button is clicked

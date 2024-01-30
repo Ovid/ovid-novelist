@@ -1,11 +1,11 @@
-from PyQt6.QtWidgets import QMenuBar, QDialog, QMessageBox, QFileDialog
+from PyQt6.QtWidgets import QMenuBar, QDialog, QMessageBox, QFileDialog, QInputDialog
 from PyQt6.QtGui import QAction
 
 import gzip
 import pickle
 
-from ovid.ui.OvidListWidgetChapter import OvidListWidgetChapter
 from ovid.ui.OvidNovelDialog import OvidNovelDialog
+from ovid.ui.Utils import setNovel
 
 from ovid.model.Novel import Novel
 
@@ -41,6 +41,7 @@ class OvidMenuBar(QMenuBar):
                     "trigger": self.parent.textEditor.selectAll,
                     "shortcut": "Ctrl+A",
                 },
+                "Rename Novel": {"trigger": self.rename_novel, "shortcut": "Ctrl+R"},
             },
         )
         self.add_menu(
@@ -113,6 +114,20 @@ class OvidMenuBar(QMenuBar):
     def toggleStatusbar(self):
         self.parent.statusBar.setVisible(not self.parent.statusBar.isVisible())
 
+    def rename_novel(self):
+        if self.parent.novel is None:
+            return
+
+        new_name, ok = QInputDialog.getText(
+            self,
+            "Rename Novel",
+            "Enter new novel name:",
+            text=self.parent.novel.title,
+        )
+        if ok and new_name:
+            self.parent.novel.title = new_name
+            self.parent.setWindowTitle(new_name)
+
     def new_novel(self):
         if self.parent.novel is not None:
             # dialog to tell the user that they will lose their work
@@ -137,7 +152,7 @@ class OvidMenuBar(QMenuBar):
             # Now you have the name, genre, and authors. You can create a new Novel object and add it to your application.
 
     def save_novel(self):
-        if self.parent.novel is None:
+        if self.parent.novel is None or self.parent.novel.filename is None:
             # If there is no novel, prompt the user to save as a new novel
             self.save_as_novel()
         else:
@@ -159,6 +174,9 @@ class OvidMenuBar(QMenuBar):
         filename, _ = QFileDialog.getSaveFileName(
             self, "Save Novel", default_filename, "Ovid Files (*.ovid)"
         )
+        # filename should have an .ovid extension at the end
+        if not filename.endswith(".ovid"):
+            filename += ".ovid"
 
         if filename:
             self.parent.novel.filename = filename
@@ -173,7 +191,7 @@ class OvidMenuBar(QMenuBar):
         if filename:
             try:
                 with gzip.open(filename, "rb") as f:
-                    self.parent.novel = pickle.load(f)
+                    novel = pickle.load(f)
             except Exception as e:
                 msgBox = QMessageBox()
                 msgBox.setIcon(QMessageBox.Icon.Critical)
@@ -181,18 +199,6 @@ class OvidMenuBar(QMenuBar):
                 msgBox.setInformativeText(str(e))
                 msgBox.exec()
                 return
-            self.parent.novel.filename = filename
+            novel.filename = filename
 
-            # Clear the current items in the sidebar
-            self.parent.chapterList.clear()
-
-            # Add each chapter of the loaded novel to the sidebar
-            for chapter in self.parent.novel.chapters:
-                chapter_item = OvidListWidgetChapter(chapter)
-                self.parent.chapterList.addItem(chapter_item)
-
-            # Select the first chapter and display its contents in the main window
-            if self.parent.novel.chapters:
-                first_chapter = self.parent.novel.chapters[0]
-                self.parent.chapterList.setCurrentItem(self.parent.chapterList.item(0))
-                self.parent.textEditor.setText(first_chapter.contents)
+            setNovel(self.parent, novel)
