@@ -31,3 +31,6 @@ class Novel:
 
     def get_chapters(self):
         return self.chapters
+
+    def hasNoChapters(self):
+        return len(self.chapters) == 0

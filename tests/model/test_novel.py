@@ -9,13 +9,16 @@ class TestNovel(unittest.TestCase):
 
     def test_init(self):
         novel = Novel(title="My Novel", genre="Fantasy")
+        self.assertTrue(novel.hasNoChapters())
         self.assertEqual(novel.title, "My Novel")
         self.assertEqual(novel.genre, "Fantasy")
         self.assertEqual(novel.chapters, [])
 
     def test_add_chapter(self):
+        self.assertTrue(self.novel.hasNoChapters())
         chapter = Chapter("Chapter 1", "This is the first chapter.")
         self.novel.add_chapter(chapter)
+        self.assertFalse(self.novel.hasNoChapters())
         self.assertEqual(len(self.novel.get_chapters()), 1)
         self.assertEqual(self.novel.get_chapters()[0].title, "Chapter 1")
 
