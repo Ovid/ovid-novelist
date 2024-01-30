@@ -6,6 +6,7 @@ class OvidDockWidget(QDockWidget):
     def __init__(self, parent=None):
         super().__init__("Chapters", parent)
         self.novel = Novel()
+        self.setStyleSheet('background-color: white;')
         self.setMaximumWidth(200)  # Set a preferred width for the sidebar
 
         # Create a widget to hold the list and the button
@@ -20,9 +21,10 @@ class OvidDockWidget(QDockWidget):
         self.sidebar_layout.addWidget(parent.chapterList)
 
         # Create the button to add new chapters
-        self.add_chapter_buttn = QPushButton("Add Chapter")
-        self.add_chapter_buttn.clicked.connect(parent.add_chapter)
-        self.sidebar_layout.addWidget(self.add_chapter_buttn)
+        self.add_chapter_button = QPushButton("Add Chapter")
+        self.add_chapter_button.setStyleSheet('background-color: white;')
+        self.add_chapter_button.clicked.connect(parent.add_chapter)
+        self.sidebar_layout.addWidget(self.add_chapter_button)
 
         # Set the widget to the dock
         self.setWidget(self.sidebar_widget)
