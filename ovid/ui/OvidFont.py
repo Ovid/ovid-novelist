@@ -53,7 +53,7 @@ class OvidFont:
     def setFontFamily(self, font):
         fmt = self.textEditor.currentCharFormat()
         fmt.setFontFamily(font)
-        self.textEditor.setCurrentCharFormat(fmt)
+        self.textEditor.mergeCharFormat(fmt)
 
     def setFontFamily(self, font):
         fmt = self.textEditor.currentCharFormat()
