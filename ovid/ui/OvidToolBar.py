@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QToolBar, QToolButton, QComboBox
+from PyQt6.QtWidgets import QToolBar, QToolButton, QComboBox, QLabel
 from PyQt6.QtGui import QFont
 from PyQt6.QtCore import Qt
 from .OvidFontComboBox import OvidFontComboBox
@@ -73,3 +73,22 @@ class OvidToolBar(QToolBar):
         # Connect font and font size combobox
         self.fontComboBox.currentTextChanged.connect(self.parent.fonts.setFontFamily)
         self.fontSizeComboBox.currentTextChanged.connect(self.parent.fonts.setFontSize)
+    
+        # Add a label for the mode select combo box
+        mode_label = QLabel("Mode:")
+        self.addWidget(mode_label)
+
+        # Add a combo box for selecting between "Novel" and "Outline"
+        mode_select = QComboBox()
+        mode_select.addItem("Novel")
+        mode_select.addItem("Outline")
+        mode_select.currentTextChanged.connect(self.onModeChanged)
+        self.addWidget(mode_select)
+
+    def onModeChanged(self, text):
+        if text == "Novel":
+            # switch to novel mode
+            pass
+        elif text == "Outline":
+            # switch to outline mode
+            pass
