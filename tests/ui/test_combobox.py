@@ -5,6 +5,7 @@ from PyQt6.QtWidgets import QApplication
 
 app = QApplication([])
 
+
 class TestOvidFontComboBox(unittest.TestCase):
     def setUp(self):
         self.font_combo_box = OvidFontComboBox()

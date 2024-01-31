@@ -1,5 +1,6 @@
 import uuid
 
+
 class Chapter:
     def __init__(self, title, previous_chapter=None, next_chapter=None, contents=None):
         self.title = title
