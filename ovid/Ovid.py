@@ -79,6 +79,10 @@ class Ovid(QMainWindow):
         novel.add_chapter(Chapter("Chapter 1"))
         setNovel(self, novel)
 
+        # if we don't add this for the new novel, we are prompted to save
+        # out "unsaved" changes if we quit out of the novel and don't add anything.
+        novel.saved = True
+
     def add_chapter(self, maybe_chapter_name=None):
         # This function will be called when the button is clicked
         # Here, you can add logic to add a new chapter to the chapterList
