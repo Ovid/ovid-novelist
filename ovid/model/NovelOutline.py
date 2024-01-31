@@ -7,10 +7,13 @@ class NovelOutline:
         chapter_uuid = chapter.get_uuid()
         self.outline[chapter_uuid] = section
 
-    def remove_section(self, chapter, section):
+    def remove_section(self, chapter):
         chapter_uuid = chapter.get_uuid()
         if chapter_uuid in self.outline:
             del self.outline[chapter_uuid]
+    
+    def clear_outline(self):
+        self.outline = {}
 
     def get_section(self, chapter):
         return self.outline.get(chapter.get_uuid(), None)

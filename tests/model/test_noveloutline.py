@@ -14,7 +14,7 @@ class TestNovelOutline(unittest.TestCase):
         chapter = Chapter("Test Chapter")
         outline.add_section(chapter, "Test Section")
         self.assertEqual(outline.get_section(chapter), "Test Section")
-        outline.remove_section(chapter, "Test Section")
+        outline.remove_section(chapter)
         self.assertEqual(outline.get_section(chapter), None)
 
     def test_sync_with_novel(self):
