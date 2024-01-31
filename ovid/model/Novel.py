@@ -15,6 +15,14 @@ class Novel:
         self.currentChapter = None
         self.saved = True
     
+    def update_version(self):
+        for chapter in self.chapters:
+            chapter.update_version()
+
+        if not hasattr(self, "outline"):
+            self.outline = NovelOutline(self)
+            self.outline.sync_with_novel()
+    
     def set_current_chapter(self, chapter: Chapter) -> None:
         self.currentChapter = chapter
 

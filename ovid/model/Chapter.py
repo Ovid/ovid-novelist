@@ -12,5 +12,9 @@ class Chapter:
     def get_uuid(self):
         return self._uuid
 
+    def update_version(self):
+        if not hasattr(self, "_uuid"):
+            self._uuid = uuid.uuid4()
+
     def __str__(self):
         return self.title

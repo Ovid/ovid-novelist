@@ -2,6 +2,7 @@ from PyQt6.QtWidgets import QToolBar, QToolButton, QComboBox, QLabel
 from PyQt6.QtGui import QFont
 from PyQt6.QtCore import Qt
 from .OvidFontComboBox import OvidFontComboBox
+from .OvidOutlineWidget import OvidOutlineWidget
 
 
 class OvidToolBar(QToolBar):
@@ -65,7 +66,6 @@ class OvidToolBar(QToolBar):
         self.addWidget(self.fontSizeComboBox)
         for i in range(8, 31):
             self.fontSizeComboBox.addItem(str(i))
-
         self.fontSizeComboBox.setCurrentText(str(self.parent.defaultFontSize))
         self.fontSizeComboBox.setEditable(True)
         self.fontComboBox.setCurrentText(self.parent.defaultFontFamily)
@@ -85,10 +85,17 @@ class OvidToolBar(QToolBar):
         mode_select.currentTextChanged.connect(self.onModeChanged)
         self.addWidget(mode_select)
 
+        # Create the outline widget and add it to the layout, but hide it initially
+        self.outlineWidget = OvidOutlineWidget(self)
+        self.outlineWidget.hide()
+        self.layout().addWidget(self.outlineWidget)
+        return
+
     def onModeChanged(self, text):
         if text == "Novel":
-            # switch to novel mode
-            pass
+            self.parent.textEditor.show()
+            self.outlineWidget.hide()
         elif text == "Outline":
-            # switch to outline mode
-            pass
+            self.outlineWidget.setNovel(self.parent.novel)
+            self.parent.textEditor.hide()
+            self.outlineWidget.show()
