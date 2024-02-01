@@ -9,12 +9,12 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QAction
 
-from ovid.ui.OvidFont import OvidFont
-from ovid.ui.OvidMenuBar import OvidMenuBar
-from ovid.ui.OvidToolBar import OvidToolBar
 from ovid.ui.OvidDockWidget import OvidDockWidget
-from ovid.ui.OvidTextEdit import OvidTextEdit
+from ovid.ui.OvidFont import OvidFont
 from ovid.ui.OvidListWidgetChapter import OvidListWidgetChapter
+from ovid.ui.OvidMenuBar import OvidMenuBar
+from ovid.ui.OvidTextEdit import OvidTextEdit
+from ovid.ui.OvidToolBar import OvidToolBar
 from ovid.ui.Utils import setNovel
 
 from ovid.model.Novel import Novel
@@ -82,6 +82,9 @@ class Ovid(QMainWindow):
         # if we don't add this for the new novel, we are prompted to save
         # out "unsaved" changes if we quit out of the novel and don't add anything.
         novel.saved = True
+    
+    def get_novel(self):
+        return self.novel
 
     def add_chapter(self, maybe_chapter_name=None):
         # This function will be called when the button is clicked

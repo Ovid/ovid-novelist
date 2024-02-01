@@ -1,4 +1,4 @@
-from PyQt6.QtWidgets import QToolBar, QToolButton, QComboBox, QLabel
+from PyQt6.QtWidgets import QToolBar, QToolButton, QComboBox, QLabel, QWidgetAction
 from PyQt6.QtGui import QFont
 from PyQt6.QtCore import Qt
 from .OvidFontComboBox import OvidFontComboBox
@@ -76,26 +76,35 @@ class OvidToolBar(QToolBar):
     
         # Add a label for the mode select combo box
         mode_label = QLabel("Mode:")
-        self.addWidget(mode_label)
+        mode_label_action = QWidgetAction(self)
+        mode_label_action.setDefaultWidget(mode_label)
+        self.addAction(mode_label_action)
 
         # Add a combo box for selecting between "Novel" and "Outline"
         mode_select = QComboBox()
         mode_select.addItem("Novel")
         mode_select.addItem("Outline")
         mode_select.currentTextChanged.connect(self.onModeChanged)
-        self.addWidget(mode_select)
+        mode_select_action = QWidgetAction(self)
+        mode_select_action.setDefaultWidget(mode_select)
+        self.addAction(mode_select_action)
 
-        # Create the outline widget and add it to the layout, but hide it initially
+        # # Create the outline widget and add it to the layout, but hide it initially
         self.outlineWidget = OvidOutlineWidget(self)
         self.outlineWidget.hide()
-        self.layout().addWidget(self.outlineWidget)
-        return
+
+        # Create a QWidgetAction for the outline widget and add it to the toolbar
+        outline_widget_action = QWidgetAction(self)
+        outline_widget_action.setDefaultWidget(self.outlineWidget)
+        self.addAction(outline_widget_action)
 
     def onModeChanged(self, text):
         if text == "Novel":
-            self.parent.textEditor.show()
             self.outlineWidget.hide()
+            self.parent.setCentralWidget(self.parent.textEditor)
+            self.parent.textEditor.show()
         elif text == "Outline":
             self.outlineWidget.setNovel(self.parent.novel)
             self.parent.textEditor.hide()
+            self.parent.setCentralWidget(self.outlineWidget)
             self.outlineWidget.show()
