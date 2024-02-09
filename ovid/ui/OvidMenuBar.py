@@ -195,6 +195,7 @@ class OvidMenuBar(QMenuBar):
             try:
                 with gzip.open(filename, "rb") as f:
                     novel = pickle.load(f)
+                    novel.update_version()
             except Exception as e:
                 msgBox = QMessageBox()
                 msgBox.setIcon(QMessageBox.Icon.Critical)

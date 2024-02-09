@@ -2,6 +2,11 @@ from ovid.ui.OvidListWidgetChapter import OvidListWidgetChapter
 
 
 def setNovel(ovid, novel):
+
+    # Must set the central widget. Otherwise, very bad things happen (the
+    # program crashes when it tries to update something that's not there)
+    ovid.setCentralWidget(ovid.textEditor)
+
     # Clear the current items in the sidebar
     ovid.novel = novel
     ovid.chapterList.clear()
