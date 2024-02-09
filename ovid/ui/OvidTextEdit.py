@@ -1,12 +1,10 @@
-from PyQt6.QtCore import Qt
-from PyQt6.QtWidgets import QTextEdit, QLineEdit
+from PyQt6.QtWidgets import QTextEdit
 from PyQt6.QtGui import (
     QFont,
     QPalette,
     QColor,
     QTextBlockFormat,
     QTextCharFormat,
-    QTextCursor,
 )
 
 
