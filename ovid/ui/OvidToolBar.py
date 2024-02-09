@@ -74,29 +74,31 @@ class OvidToolBar(QToolBar):
         self.fontComboBox.currentTextChanged.connect(self.parent.fonts.setFontFamily)
         self.fontSizeComboBox.currentTextChanged.connect(self.parent.fonts.setFontSize)
     
-        # Add a label for the mode select combo box
-        mode_label = QLabel("Mode:")
-        mode_label_action = QWidgetAction(self)
-        mode_label_action.setDefaultWidget(mode_label)
-        self.addAction(mode_label_action)
+        # temporarily remove this until we can debug it
+        if False:
+            # Add a label for the mode select combo box
+            mode_label = QLabel("Mode:")
+            mode_label_action = QWidgetAction(self)
+            mode_label_action.setDefaultWidget(mode_label)
+            self.addAction(mode_label_action)
 
-        # Add a combo box for selecting between "Novel" and "Outline"
-        mode_select = QComboBox()
-        mode_select.addItem("Novel")
-        mode_select.addItem("Outline")
-        mode_select.currentTextChanged.connect(self.onModeChanged)
-        mode_select_action = QWidgetAction(self)
-        mode_select_action.setDefaultWidget(mode_select)
-        self.addAction(mode_select_action)
+            # Add a combo box for selecting between "Novel" and "Outline"
+            mode_select = QComboBox()
+            mode_select.addItem("Novel")
+            mode_select.addItem("Outline")
+            mode_select.currentTextChanged.connect(self.onModeChanged)
+            mode_select_action = QWidgetAction(self)
+            mode_select_action.setDefaultWidget(mode_select)
+            self.addAction(mode_select_action)
 
-        # # Create the outline widget and add it to the layout, but hide it initially
-        self.outlineWidget = OvidOutlineWidget(self)
-        self.outlineWidget.hide()
+            # # Create the outline widget and add it to the layout, but hide it initially
+            self.outlineWidget = OvidOutlineWidget(self)
+            self.outlineWidget.hide()
 
-        # Create a QWidgetAction for the outline widget and add it to the toolbar
-        outline_widget_action = QWidgetAction(self)
-        outline_widget_action.setDefaultWidget(self.outlineWidget)
-        self.addAction(outline_widget_action)
+            # Create a QWidgetAction for the outline widget and add it to the toolbar
+            outline_widget_action = QWidgetAction(self)
+            outline_widget_action.setDefaultWidget(self.outlineWidget)
+            self.addAction(outline_widget_action)
 
     def onModeChanged(self, text):
         if text == "Novel":
